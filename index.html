@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#123c2e">
-  <title>Évaluateur K&R</title>
+  <title>Évaluateur K&R — Closed-card V2</title>
   <style>
 :root {
   color-scheme: light;
@@ -285,6 +285,21 @@ h1 {
   padding-inline: 24px;
   border-radius: 14px;
 }
+.score-context {
+  display: grid;
+  grid-template-columns: auto minmax(150px, 1fr);
+  gap: 6px 10px;
+  align-items: center;
+  margin-top: -2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.72);
+}
+.score-context label { color: var(--muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .045em; }
+.score-context select { min-height: 36px; padding: 0 10px; }
+.score-context span { grid-column: 1 / -1; color: var(--muted); font-size: .68rem; line-height: 1.25; }
+
 .par-panel {
   margin-top: 0;
   background: rgba(255,255,255,.96);
@@ -439,7 +454,7 @@ h1 {
   background: #fcfaf6;
 }
 .contract-groups { display: grid; gap: 10px; }
-.contract-comparisons {
+.contract-comparisons { display:none !important;
   display: grid;
   gap: 7px;
   margin: 10px 0 0;
@@ -633,6 +648,95 @@ h1 {
   font-weight: 850;
   font-variant-numeric: tabular-nums;
 }
+.contract-option-score {
+  grid-column: 1 / -1;
+  margin-top: -3px;
+  color: var(--muted);
+  font-size: .66rem;
+  line-height: 1.2;
+  font-weight: 720;
+  text-align: right;
+}
+
+.contract-option.is-best-ev {
+  border-color: rgba(183,145,79,.72);
+  box-shadow: inset 0 0 0 1px rgba(183,145,79,.18), 0 5px 14px rgba(18,60,46,.05);
+}
+.contract-option-badge {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin-top: -2px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: #715b32;
+  font-size: .62rem;
+  font-weight: 820;
+  letter-spacing: .02em;
+}
+.engine-note {
+  color: var(--muted);
+  font-size: .66rem;
+  line-height: 1.35;
+}
+
+.contract-option-slaminfo {
+  grid-column: 1 / -1;
+  margin-top: -2px;
+  color: var(--muted);
+  font-size: .67rem;
+  line-height: 1.28;
+  font-weight: 680;
+}
+.contract-option-slaminfo .warn { color: #8a5a20; font-weight: 800; }
+
+.slam-structure {
+  margin: 0 0 10px;
+  padding: 10px 11px;
+  border: 1px solid rgba(183,145,79,.30);
+  border-radius: 11px;
+  background: #fcfaf6;
+}
+.slam-structure-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.slam-structure-head strong { color: var(--ink); font-size: .78rem; }
+.slam-structure-rating { color: #8a5a20; font-size: .72rem; font-weight: 850; }
+
+.closed-card-box {
+  margin: 8px 0 10px;
+  padding: 9px 10px;
+  border: 1px solid #dfe6e1;
+  border-radius: 10px;
+  background: #fff;
+}
+.closed-card-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.closed-card-head span { color:var(--muted); font-size:.67rem; font-weight:800; text-transform:uppercase; letter-spacing:.045em; }
+.closed-card-head strong { color:var(--green); font-size:1.02rem; font-weight:880; }
+.closed-card-gap { margin-top:3px; color:#8a5a20; font-size:.68rem; font-weight:760; }
+.closed-card-reasons { margin-top:5px; color:#5c6661; font-size:.68rem; line-height:1.3; }
+.closed-card-note { margin-top:5px; color:var(--muted); font-size:.64rem; line-height:1.25; }
+.slam-structure-lines { display: grid; gap: 4px; color: #4f5a54; font-size: .71rem; line-height: 1.3; }
+.slam-structure-lines strong { color: var(--ink); }
+.slam-levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.slam-level-pill {
+  padding: 6px 7px;
+  border: 1px solid #e5dfd2;
+  border-radius: 9px;
+  background: #fff;
+  text-align: center;
+}
+.slam-level-pill span { display:block; color:var(--muted); font-size:.61rem; font-weight:760; }
+.slam-level-pill strong { display:block; margin-top:2px; color:var(--green); font-size:.78rem; font-weight:850; }
 .contract-detail {
   margin-top: 11px;
   padding: 12px 13px;
@@ -894,6 +998,363 @@ h1 {
   .contract-ladder-cell { flex: 0 0 62px; }
   .contract-ladder-subtitle { display: none; }
 }
+
+
+.competitive-par {
+  margin-top: 10px;
+  padding: 12px 13px;
+  border: 1px solid #dfe6e1;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f8faf9, #f4f7f5);
+}
+.competitive-par[hidden] { display: none; }
+.competitive-par-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+.competitive-par-title { color: var(--green); font-size: .92rem; font-weight: 850; }
+.competitive-par-score { color: var(--green); font-size: 1.05rem; font-weight: 880; font-variant-numeric: tabular-nums; }
+.competitive-par-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 9px;
+  border: 1px solid #e2e7e4;
+  border-radius: 11px;
+  background: #fff;
+}
+.competitive-par-contract { color: var(--ink); font-size: 1.08rem; font-weight: 880; }
+.competitive-par-frequency { color: var(--muted); font-size: .72rem; font-weight: 760; text-align: right; }
+.competitive-par-initiative {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 7px;
+  margin-top: 8px;
+}
+.competitive-par-initiative > div {
+  padding: 7px 8px;
+  border: 1px solid #e5e9e6;
+  border-radius: 9px;
+  background: rgba(255,255,255,.8);
+}
+.competitive-par-initiative span { display: block; color: var(--muted); font-size: .62rem; font-weight: 760; text-transform: uppercase; letter-spacing: .04em; }
+.competitive-par-initiative strong { display: block; margin-top: 2px; color: var(--ink); font-size: .78rem; font-weight: 820; }
+.competitive-par-note { margin-top: 7px; color: var(--muted); font-size: .68rem; line-height: 1.32; }
+@media (max-width: 520px) { .competitive-par-initiative { grid-template-columns: 1fr; } }
+
+.validation-bank {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: .68rem;
+}
+.validation-bank summary {
+  cursor: pointer;
+  color: var(--green-2);
+  font-weight: 820;
+  list-style: none;
+}
+.validation-bank summary::-webkit-details-marker { display: none; }
+.validation-bank summary::after { content: "  ▾"; }
+.validation-bank[open] summary::after { content: "  ▴"; }
+.validation-bank-body { margin-top: 7px; line-height: 1.38; }
+.validation-bank-ok { color: var(--green-2); font-weight: 800; }
+.validation-bank-fail { color: var(--danger); font-weight: 800; }
+.validation-bank-groups { margin-top: 5px; }
+
+
+
+/* ===== UX FINAL ===== */
+.result-overview {
+  display: grid;
+  gap: 10px;
+  margin: 2px 0 12px;
+}
+.practical-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 17px 18px;
+  border: 1px solid rgba(18,60,46,.18);
+  border-radius: 17px;
+  background: linear-gradient(135deg, #f5faf7 0%, #fff 58%, #fbf7ef 100%);
+  box-shadow: 0 8px 22px rgba(18,60,46,.07);
+}
+.practical-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--green-2), var(--gold));
+}
+.practical-kicker {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .075em;
+}
+.practical-main {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 4px;
+}
+.practical-contract {
+  color: var(--green);
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -.045em;
+}
+.practical-declarer {
+  margin-left: 7px;
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 820;
+  letter-spacing: .035em;
+}
+.practical-ev {
+  color: var(--green);
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 900;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.practical-metrics {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 7px;
+  margin-top: 13px;
+}
+.practical-metric {
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid #e2e8e4;
+  border-radius: 10px;
+  background: rgba(255,255,255,.8);
+}
+.practical-metric span {
+  display: block;
+  color: var(--muted);
+  font-size: .6rem;
+  font-weight: 780;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+.practical-metric strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink);
+  font-size: .84rem;
+  font-weight: 850;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.practical-note {
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: .68rem;
+  line-height: 1.3;
+}
+.overview-strip {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 7px;
+}
+.overview-item {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid #e2e7e4;
+  border-radius: 11px;
+  background: #fff;
+}
+.overview-item span {
+  display: block;
+  color: var(--muted);
+  font-size: .58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+.overview-item strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink);
+  font-size: .75rem;
+  line-height: 1.18;
+  font-weight: 820;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.primary-recommendations-title {
+  margin: 12px 1px 7px;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.analysis-details {
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 4px;
+}
+.analysis-details > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 9px 1px 6px;
+  color: var(--green-2);
+  font-size: .75rem;
+  font-weight: 850;
+  user-select: none;
+}
+.analysis-details > summary::-webkit-details-marker { display:none; }
+.analysis-details > summary::after { content:"  ▾"; font-size:.68rem; }
+.analysis-details[open] > summary::after { content:"  ▴"; }
+.analysis-details-body { display:grid; gap:10px; padding-top:5px; }
+.analysis-subdetails {
+  border: 1px solid #e4e9e6;
+  border-radius: 12px;
+  background: #fbfcfb;
+}
+.analysis-subdetails > summary {
+  list-style:none;
+  cursor:pointer;
+  padding:9px 11px;
+  color:var(--ink);
+  font-size:.72rem;
+  font-weight:820;
+}
+.analysis-subdetails > summary::-webkit-details-marker { display:none; }
+.analysis-subdetails > summary::after { content:"  ▾"; color:var(--muted); }
+.analysis-subdetails[open] > summary::after { content:"  ▴"; }
+.analysis-subdetails-body { padding: 0 10px 10px; }
+.contract-groups { gap: 8px; }
+.contract-band { gap: 5px; }
+.contract-band-label { font-size: .64rem; }
+.contract-option { padding: 8px 9px; border-radius: 11px; }
+.contract-option-name { font-size: .98rem; }
+.contract-option-pct { font-size: .91rem; }
+.contract-option-score { font-size: .63rem; }
+.contract-option-badge { font-size: .59rem; }
+.contract-option-slaminfo { font-size: .62rem; }
+.contract-zone-head { margin-bottom: 7px; }
+.contract-fit-summary { margin-bottom: 7px; }
+.contract-suggestions { padding: 12px 13px; }
+.contract-ladder { margin-bottom: 0; }
+.competitive-par { margin-top: 0; }
+.validation-bank { margin-top: 0; }
+.contract-tester { margin-top: 0; padding-top: 0; border-top: 0; }
+#contractSampleNote { font-size:.63rem; line-height:1.3; }
+@media (max-width: 520px) {
+  .practical-main { align-items:start; }
+  .practical-contract { font-size:1.7rem; }
+  .practical-metrics, .overview-strip { grid-template-columns: 1fr; }
+  .practical-metric, .overview-item { display:grid; grid-template-columns: 95px 1fr; align-items:baseline; gap:8px; }
+  .practical-metric strong, .overview-item strong { margin-top:0; }
+}
+
+
+/* --- Vue essentielle : évaluation des mains + probabilités DD des contrats logiques --- */
+.essential-panel { padding: 0; border: 0; background: transparent; }
+.essential-overview { margin-bottom: 16px; grid-template-columns: minmax(0,1fr); }
+.essential-overview .overview-item { padding: 11px 14px; }
+.essential-overview .overview-item span { font-size: .66rem; }
+.essential-overview .overview-item strong { font-size: 1.2rem; color: var(--green); margin-top: 4px; }
+/* Valeur K&R dominante, points d'honneurs discrets sur la même ligne. */
+.essential-overview .overview-item strong .combined-hcp {
+  display: inline;
+  font-size: .75rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  color: var(--muted);
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.essential-section-title {
+  margin: 16px 0 8px;
+  color: var(--green);
+  font-size: .78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .055em;
+}
+.essential-denoms { display: grid; gap: 8px; }
+.essential-denom-card {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 11px 12px;
+  border: 1px solid #e1e7e3;
+  border-radius: 12px;
+  background: #fff;
+}
+.essential-denom-name { font-size: 1rem; font-weight: 850; color: var(--ink); }
+.essential-denom-meta { margin-top: 2px; color: var(--muted); font-size: .72rem; font-weight: 680; }
+.essential-ladders { display: grid; gap: 10px; }
+.essential-ladder {
+  padding: 11px 12px 12px;
+  border: 1px solid #e1e7e3;
+  border-radius: 12px;
+  background: #fff;
+}
+.essential-ladder-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px; }
+.essential-ladder-head strong { color:var(--ink); font-size:.9rem; }
+.essential-ladder-head span { color:var(--muted); font-size:.67rem; font-weight:680; }
+
+.essential-denom-card.is-primary { border-color: rgba(29,90,69,.35); box-shadow: inset 0 0 0 1px rgba(29,90,69,.08); }
+.essential-denom-card.is-secondary { opacity:.92; }
+.essential-status { display:inline-flex; align-items:center; margin-left:8px; padding:2px 7px; border-radius:999px; font-size:.66rem; font-weight:820; vertical-align:middle; }
+.essential-status.solid { color:var(--green-2); background:var(--green-soft); }
+.essential-dd-highlight { color:var(--green); font-size:.79rem; font-weight:850; }
+.essential-dd-context { margin-top:3px; font-size:.65rem; color:var(--muted); font-weight:580; }
+
+.essential-status.borderline { color:#8a641f; background:var(--gold-soft); }
+.essential-status.weak { color:var(--danger); background:#fff0f1; }
+.essential-section-note { color:var(--muted); font-size:.68rem; font-weight:680; }
+.essential-sa-toggle { appearance:none; border:0; background:transparent; color:var(--green-2); padding:2px 0; font-size:.72rem; font-weight:820; cursor:pointer; }
+.essential-sa-toggle:hover { text-decoration:underline; }
+.essential-ladder-grid { display:grid; grid-template-columns:repeat(var(--essential-count,6), minmax(0,1fr)); gap:6px; }
+.essential-ladder-cell { min-width:0; padding:7px 3px 6px; border:1px solid #e4e9e6; border-radius:9px; text-align:center; background:#fbfcfb; }
+.essential-ladder-cell.is-frontier { border-color:var(--green-3); background:#f3f8f5; box-shadow:inset 0 0 0 1px rgba(45,112,88,.12); }
+.essential-ladder-cell.is-game { background:#f8faf9; }
+.essential-ladder-level { display:block; color:var(--ink); font-size:.76rem; font-weight:820; white-space:nowrap; }
+.essential-ladder-pct { display:block; margin-top:3px; color:var(--green); font-size:.8rem; font-weight:870; }
+.essential-tester { margin-top: 18px; }
+@media (max-width: 520px) {
+  .essential-overview { grid-template-columns:1fr; }
+  .essential-ladder-grid { display:flex; overflow-x:auto; padding-bottom:2px; }
+  .essential-ladder-cell { flex:0 0 58px; }
+}
+
+.essential-structure-note { margin-top: 4px; color: var(--muted); font-size: .70rem; line-height: 1.3; }
+
+.essential-par { padding: 11px 13px; border: 1px solid rgba(29,90,69,.24); border-radius: 12px; background: #f7faf8; margin: 11px 0 15px; }
+.essential-par-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.essential-par-head strong { color: var(--green); font-size: .8rem; }
+.essential-par-head span { color: var(--muted); font-size: .66rem; }
+.essential-par-main { display:flex; flex-wrap:wrap; align-items:baseline; gap:5px 13px; margin-top:5px; }
+.essential-par-contract { font-weight: 860; font-size: 1.12rem; color: var(--green); }
+.essential-par-pct { font-size:.76rem; font-weight:760; color:var(--ink); }
+.essential-par-foot { font-size:.68rem; color:var(--muted); margin-top:3px; }
+.essential-slam-extra { padding: 9px 11px; border:1px solid rgba(183,145,79,.32); background: #fffdf8; border-radius:11px; margin-top:9px; }
+.essential-slam-extra-title { font-size:.69rem; color:var(--muted); font-weight:800; margin-bottom:5px; }
+.essential-slam-extra-row { display:flex; gap:7px; align-items:baseline; font-size:.83rem; }
+.essential-slam-extra-row + .essential-slam-extra-row {margin-top:3px;}
+.essential-slam-extra-row strong { color:var(--green); white-space:nowrap; }
+.essential-slam-extra-row span { color:var(--muted); font-size:.68rem; }
+
 </style>
 </head>
 <body>
@@ -932,7 +1393,7 @@ h1 {
           <span class="holding-item"><span class="holding-suit heart">♥</span><span id="display-N-H" class="holding-cards pending"></span></span>
           <span class="holding-item"><span class="holding-suit diamond">♦</span><span id="display-N-D" class="holding-cards pending"></span></span>
           <span class="holding-item"><span class="holding-suit club">♣</span><span id="display-N-C" class="holding-cards pending"></span></span>
-          <span id="hcpN" class="hcp-value">H : 0</span>
+          <span id="hcpN" class="hcp-value">0 H</span>
         </div>
         <div hidden aria-hidden="true">
           <input id="N-S" data-seat="N" data-suit="S"><input id="N-H" data-seat="N" data-suit="H">
@@ -961,7 +1422,7 @@ h1 {
           <span class="holding-item"><span class="holding-suit heart">♥</span><span id="display-S-H" class="holding-cards pending"></span></span>
           <span class="holding-item"><span class="holding-suit diamond">♦</span><span id="display-S-D" class="holding-cards pending"></span></span>
           <span class="holding-item"><span class="holding-suit club">♣</span><span id="display-S-C" class="holding-cards pending"></span></span>
-          <span id="hcpS" class="hcp-value">H : 0</span>
+          <span id="hcpS" class="hcp-value">0 H</span>
         </div>
         <div hidden aria-hidden="true">
           <input id="S-S" data-seat="S" data-suit="S"><input id="S-H" data-seat="S" data-suit="H">
@@ -980,51 +1441,57 @@ h1 {
         </div>
 
         <section id="parPanel" class="par-panel" hidden aria-live="polite">
-      <div class="par-header">
-        <div>
-          <span class="eyebrow">72 distributions rapides · stabilisation automatique jusqu’à 288</span>
-          <h2>Probabilités de réussite</h2>
-        </div>
-        <div id="parProgressText" class="progress-text">0 / 72</div>
-      </div>
-      <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
-
-      <div id="parLoading" class="par-loading">Calcul DDS en cours…</div>
-      <div id="parResults" hidden>
-        <div class="contract-suggestions">
-          <div class="contract-zone-head">
+          <div class="par-header">
             <div>
-              <span class="contract-zone-label">Force combinée</span>
-              <strong id="krZoneLabel" class="contract-zone-value">—</strong>
+              <span class="eyebrow">DDS · probabilités théoriques</span>
+              <h2>Contrats logiques</h2>
             </div>
-            <div id="krPairTotal" class="contract-kr-total">—</div>
+            <div id="parProgressText" class="progress-text">0 / 72</div>
           </div>
-          <div id="fitSummary" class="contract-fit-summary"></div>
-          <div id="contractLadder" class="contract-ladder"></div>
-          <div id="contractSuggestions" class="contract-groups"></div>
-          <div id="contractComparisons" class="contract-comparisons"></div>
-          <div class="all-contracts-wrap">
-            <button id="allContractsToggle" type="button" class="all-contracts-toggle" aria-expanded="false" hidden>Voir tous les contrats</button>
-            <div id="allContractsMatrix" class="all-contracts-matrix" hidden></div>
-          </div>
-          <div id="contractDetail" class="contract-detail" hidden></div>
-          <div id="contractSampleNote" class="contract-note">Probabilité de réussite en double-dummy.</div>
-          <div id="refineRow" class="refine-row" hidden>
-            <button id="refineBtn" type="button" class="btn btn-secondary">Affiner</button>
-            <span id="refineHint" class="refine-hint"></span>
-          </div>
-          <div class="contract-tester">
-            <label class="contract-tester-label" for="contractTestInput">Tester un autre contrat</label>
-            <div class="contract-tester-row">
-              <input id="contractTestInput" class="contract-tester-input" autocomplete="off" spellcheck="false" placeholder="Ex. 6T, 5K, 4C, 3SA, 4P">
+          <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+
+          <div id="parLoading" class="par-loading">Calcul DDS en cours…</div>
+          <div id="parResults" hidden>
+            <div class="contract-suggestions essential-panel">
+              <div class="overview-strip essential-overview">
+                <div class="overview-item"><span>Force combinée</span><strong id="krZoneLabel">—</strong></div>
+              </div>
+
+              <div id="essentialPar" class="essential-par" hidden aria-live="polite"></div>
+
+              <div class="essential-section-title">Dénominations logiques</div>
+              <div id="contractSuggestions" class="essential-denoms"></div>
+
+              <div class="essential-section-title">Probabilités de réussite par dénomination</div>
+              <div id="contractLadder" class="essential-ladders"></div>
+
+              <div class="contract-tester essential-tester">
+                <label class="contract-tester-label" for="contractTestInput">Tester directement un contrat</label>
+                <div class="contract-tester-row">
+                  <input id="contractTestInput" class="contract-tester-input" autocomplete="off" spellcheck="false" placeholder="Ex. 4C, 3SA, 5K, 6P">
+                </div>
+                <div class="contract-tester-hint">P = Pique · C = Cœur · K = Carreau · T = Trèfle · SA = Sans-Atout</div>
+                <div id="contractTestResult" class="contract-test-result" aria-live="polite"></div>
+              </div>
+
+              <div id="contractSampleNote" class="contract-note">Probabilité de réussite en double-dummy.</div>
             </div>
-            <div class="contract-tester-hint">P = Pique · C = Cœur · K = Carreau · T = Trèfle · SA = Sans-Atout</div>
-            <div id="contractTestResult" class="contract-test-result" aria-live="polite"></div>
           </div>
-        </div>
-      </div>
           <div id="parError" class="par-error" hidden></div>
         </section>
+
+        <!-- Éléments de compatibilité internes : les fonctions avancées restent inactives et invisibles. -->
+        <div hidden aria-hidden="true">
+          <select id="vulnerabilitySelect"><option value="NONE" selected>Personne vuln.</option></select>
+          <span id="scoreContextHint"></span>
+          <div id="practicalHero"></div><span id="parSummaryPlain"></span>
+          <strong id="krZoneLabelLegacy"></strong><div id="krPairTotal"></div><div id="fitSummary"></div>
+          <div id="refineRow"><button id="refineBtn" type="button"></button><span id="refineHint"></span></div>
+          <details id="advancedAnalysis"><div id="contractDetail"></div></details>
+          <div id="contractComparisons"></div><div id="competitivePar"></div>
+          <button id="allContractsToggle" type="button"></button><div id="allContractsMatrix"></div>
+          <details id="validationBank"><summary id="validationBankSummary"></summary><div id="validationBankBody"></div></details>
+        </div>
       </section>
     </div>
 
@@ -1057,6 +1524,8 @@ const MAX_SAMPLE_COUNT = SAMPLE_STAGES[SAMPLE_STAGES.length - 1];
 const MANUAL_REFINE_STAGES = Object.freeze([576, 1152]);
 const MAX_MANUAL_SAMPLE_COUNT = MANUAL_REFINE_STAGES[MANUAL_REFINE_STAGES.length - 1];
 const REFINEMENT_MARGIN_TARGET = 0.06;
+const EV_DECISION_MARGIN = 45; // points de score duplicate : en-dessous, décision considérée proche.
+const EV_ANOMALY_MARGIN = 60; // avantage EV requis pour faire remonter une dénomination non naturelle.
 const DECLARER_PILOT_COUNT = 24;
 const KR_SUITS = ['S', 'H', 'D', 'C'];
 const FR_TO_EN = { R: 'K', D: 'Q', V: 'J' };
@@ -1064,6 +1533,11 @@ const EN_TO_FR = { K: 'R', Q: 'D', J: 'V', T: 'X' };
 const SPOT_RANKS = '765432';
 const SUIT_SYMBOL = { S: '♠', H: '♥', D: '♦', C: '♣', N: 'SA' };
 const SEAT_LABEL = { N: 'Nord', E: 'Est', S: 'Sud', W: 'Ouest', NS: 'NS', EW: 'EO' };
+let scoreVulnerability = 'NONE'; // NONE | NS | EW | BOTH. Les deux mains étudiées sont NS.
+
+function nsIsVulnerable() { return scoreVulnerability === 'NS' || scoreVulnerability === 'BOTH'; }
+function ewIsVulnerable() { return scoreVulnerability === 'EW' || scoreVulnerability === 'BOTH'; }
+function scoreContextLabel() { return `${nsIsVulnerable() ? 'Vulnérable' : 'Non vulnérable'} · non contré`; }
 
 let runGeneration = 0;
 let activeWorkers = [];
@@ -1469,22 +1943,22 @@ function updateAll() {
     const state = validateHands();
     renderCount('N', state.nCount, state.cross.length > 0);
     renderCount('S', state.sCount, state.cross.length > 0);
-    document.getElementById('hcpN').textContent = `H : ${highCardPoints(state.n)}`;
-    document.getElementById('hcpS').textContent = `H : ${highCardPoints(state.s)}`;
+    document.getElementById('hcpN').textContent = `${highCardPoints(state.n)} H`;
+    document.getElementById('hcpS').textContent = `${highCardPoints(state.s)} H`;
 
     const krN = document.getElementById('krN');
     const krS = document.getElementById('krS');
     const krBoxN = document.getElementById('krBoxN');
     const krBoxS = document.getElementById('krBoxS');
     if (state.nComplete) {
-        krN.textContent = computeKaplanRubens(state.n).toFixed(2);
+        krN.textContent = `${computeKaplanRubens(state.n).toFixed(2)} K&R`;
         krBoxN.classList.remove('is-placeholder');
     } else {
         krN.textContent = '·';
         krBoxN.classList.add('is-placeholder');
     }
     if (state.sComplete) {
-        krS.textContent = computeKaplanRubens(state.s).toFixed(2);
+        krS.textContent = `${computeKaplanRubens(state.s).toFixed(2)} K&R`;
         krBoxS.classList.remove('is-placeholder');
     } else {
         krS.textContent = '·';
@@ -1710,6 +2184,267 @@ function naturalGameLevel(strain) {
     return (strain === 'H' || strain === 'S') ? 4 : 5;
 }
 
+// Barème duplicate complet pour un contrat joué par NS.
+// doubled: 0 = non contré, 1 = contré, 2 = surcontré.
+function duplicateScore(level, strain, tricks, vulnerable = false, doubled = 0) {
+    level = Number(level); tricks = Number(tricks); doubled = Number(doubled || 0);
+    const needed = level + 6;
+    if (!Number.isInteger(level) || level < 1 || level > 7 || !Number.isInteger(tricks) || tricks < 0 || tricks > 13) return 0;
+    if (![0,1,2].includes(doubled)) doubled = 0;
+    const mult = doubled === 2 ? 4 : doubled === 1 ? 2 : 1;
+
+    if (tricks < needed) {
+        const down = needed - tricks;
+        if (!doubled) return -(vulnerable ? 100 : 50) * down;
+        let penalty = 0;
+        if (vulnerable) {
+            penalty = 200 + Math.max(0, down - 1) * 300;
+        } else {
+            if (down >= 1) penalty += 100;
+            if (down >= 2) penalty += 200;
+            if (down >= 3) penalty += 200;
+            if (down >= 4) penalty += (down - 3) * 300;
+        }
+        return -penalty * (doubled === 2 ? 2 : 1);
+    }
+
+    let baseContract = 0, overUndoubled = 0;
+    if (strain === 'C' || strain === 'D') { baseContract = level * 20; overUndoubled = 20; }
+    else if (strain === 'H' || strain === 'S') { baseContract = level * 30; overUndoubled = 30; }
+    else if (strain === 'N') { baseContract = 40 + Math.max(0, level - 1) * 30; overUndoubled = 30; }
+    else return 0;
+
+    const contractPoints = baseContract * mult;
+    let score = contractPoints;
+    score += contractPoints >= 100 ? (vulnerable ? 500 : 300) : 50;
+    if (level === 6) score += vulnerable ? 750 : 500;
+    else if (level === 7) score += vulnerable ? 1500 : 1000;
+    if (doubled === 1) score += 50;
+    else if (doubled === 2) score += 100;
+
+    const over = tricks - needed;
+    if (doubled === 0) score += over * overUndoubled;
+    else {
+        const each = vulnerable ? 200 : 100;
+        score += over * each * (doubled === 2 ? 2 : 1);
+    }
+    return score;
+}
+
+// Compatibilité des anciens tests / appels NV non contrés.
+function undoubledNonVulScore(level, strain, tricks) {
+    return duplicateScore(level, strain, tricks, false, 0);
+}
+
+// --- PAR compétitif DD statistique -------------------------------------------------
+// Le moteur ci-dessous calcule un équilibre compétitif sur chaque distribution DDS.
+// Les sacrifices et les contrats contrés/surcontrés participent au calcul, mais ne sont
+// pas déroulés dans l'interface principale : on n'affiche que le résultat de PAR agrégé.
+const PAR_STRAINS_ASC = Object.freeze(['C','D','H','S','N']);
+const PAR_CONTRACTS = Object.freeze(Array.from({length:7}, (_,li) => PAR_STRAINS_ASC.map(strain => ({
+    level: li + 1,
+    strain,
+    rank: li * 5 + PAR_STRAINS_ASC.indexOf(strain)
+}))).flat());
+const PAR_TABLE_CACHE = new WeakMap();
+
+function preferredDeclarerForSide(tables, strain, side) {
+    const seats = side === 'EW' ? ['E','W'] : ['N','S'];
+    const available = (tables || []).filter(Boolean);
+    if (!available.length) return seats[0];
+    const pilotCount = available.length >= 36 ? Math.min(DECLARER_PILOT_COUNT, Math.floor(available.length / 3)) : 0;
+    const source = pilotCount ? available.slice(0, pilotCount) : available;
+    const avg = {};
+    for (const seat of seats) {
+        let sum = 0, count = 0;
+        for (const table of source) {
+            const v = Number(table && table[strain] && table[strain][seat]);
+            if (Number.isInteger(v)) { sum += v; count++; }
+        }
+        avg[seat] = count ? sum / count : -Infinity;
+    }
+    return avg[seats[1]] > avg[seats[0]] ? seats[1] : seats[0];
+}
+
+function parDeclarerMap(tables) {
+    const map = { NS:{}, EW:{} };
+    for (const strain of ['C','D','H','S','N']) {
+        map.NS[strain] = preferredDeclarerForSide(tables, strain, 'NS');
+        map.EW[strain] = preferredDeclarerForSide(tables, strain, 'EW');
+    }
+    return map;
+}
+
+function parTerminalScore(table, contract, owner, doubled, declarers) {
+    if (!contract) return 0;
+    const side = owner === 'EW' ? 'EW' : 'NS';
+    const seat = declarers[side][contract.strain];
+    const tricks = Number(table && table[contract.strain] && table[contract.strain][seat]);
+    if (!Number.isInteger(tricks)) return 0;
+    const vulnerable = side === 'NS' ? nsIsVulnerable() : ewIsVulnerable();
+    const ownScore = duplicateScore(contract.level, contract.strain, tricks, vulnerable, doubled || 0);
+    return side === 'NS' ? ownScore : -ownScore;
+}
+
+function parOutcomeKey(outcome) {
+    if (!outcome || !outcome.contract) return 'PASS';
+    return `${outcome.contract.level}${outcome.contract.strain}-${outcome.owner}-${Number(outcome.doubled||0)}`;
+}
+
+function parContractText(outcome) {
+    if (!outcome || !outcome.contract) return 'Passe';
+    const suffix = outcome.doubled === 2 ? 'XX' : outcome.doubled === 1 ? 'X' : '';
+    return `${contractNameText(outcome.contract.level, outcome.contract.strain)}${suffix} ${outcome.owner}`;
+}
+
+function betterParOutcome(actor, candidate, best) {
+    if (!best) return candidate;
+    const eps = 1e-9;
+    if (actor === 'NS') {
+        if (candidate.score > best.score + eps) return candidate;
+        if (candidate.score < best.score - eps) return best;
+    } else {
+        if (candidate.score < best.score - eps) return candidate;
+        if (candidate.score > best.score + eps) return best;
+    }
+    // En cas d'égalité exacte, conserver le premier choix exploré (passer avant surenchérir),
+    // afin d'éviter de faire monter artificiellement le niveau du contrat de PAR.
+    return best;
+}
+
+function competitiveParForTable(table, declarers, startingSide = 'NS') {
+    if (!table) return { score:0, contract:null, owner:null, doubled:0 };
+    const cacheKey = `${scoreVulnerability}|${startingSide}|${Object.values(declarers.NS).join('')}|${Object.values(declarers.EW).join('')}`;
+    let tableCache = PAR_TABLE_CACHE.get(table);
+    if (!tableCache) { tableCache = new Map(); PAR_TABLE_CACHE.set(table, tableCache); }
+    if (tableCache.has(cacheKey)) return tableCache.get(cacheKey);
+
+    const memo = new Map();
+    function solve(currentRank, owner, doubled, actor, consecutivePasses = 0) {
+        const key = `${currentRank}|${owner||'-'}|${doubled}|${actor}|${consecutivePasses}`;
+        if (memo.has(key)) return memo.get(key);
+        const current = currentRank >= 0 ? PAR_CONTRACTS[currentRank] : null;
+        const terminal = current
+            ? { score: parTerminalScore(table, current, owner, doubled, declarers), contract: current, owner, doubled }
+            : { score: 0, contract: null, owner: null, doubled: 0 };
+        let best = null;
+        const nextActor = actor === 'NS' ? 'EW' : 'NS';
+
+        // Passe : dans l'abstraction à deux camps, deux passes consécutives ferment l'enchère.
+        // Une première passe rend simplement la parole à l'autre camp ; elle ne peut donc pas
+        // faire disparaître une manche adverse après un passe initial du donneur.
+        const passOutcome = consecutivePasses >= 1
+            ? terminal
+            : solve(currentRank, owner, doubled, nextActor, consecutivePasses + 1);
+        best = betterParOutcome(actor, passOutcome, best);
+
+        // Contre : uniquement le camp adverse au contrat courant. Surcontre : uniquement le déclarant.
+        if (current) {
+            if (doubled === 0 && actor !== owner) {
+                const cand = solve(currentRank, owner, 1, owner, 0);
+                best = betterParOutcome(actor, cand, best);
+            } else if (doubled === 1 && actor === owner) {
+                const cand = solve(currentRank, owner, 2, nextActor, 0);
+                best = betterParOutcome(actor, cand, best);
+            }
+        }
+
+        // Toute surenchère doit être strictement supérieure au contrat courant.
+        for (let rank = currentRank + 1; rank < PAR_CONTRACTS.length; rank++) {
+            const cand = solve(rank, actor, 0, nextActor, 0);
+            best = betterParOutcome(actor, cand, best);
+        }
+        memo.set(key, best);
+        return best;
+    }
+
+    const result = solve(-1, null, 0, startingSide, 0);
+    tableCache.set(cacheKey, result);
+    return result;
+}
+
+function summarizeParOutcomes(outcomes) {
+    const list = (outcomes || []).filter(Boolean);
+    if (!list.length) return { count:0, meanScore:0, most:null, mostCount:0, frequency:0, counts:new Map() };
+    const counts = new Map();
+    let total = 0;
+    for (const out of list) {
+        total += Number(out.score || 0);
+        const key = parOutcomeKey(out);
+        const row = counts.get(key) || { key, count:0, outcome:out, scoreTotal:0 };
+        row.count++;
+        row.scoreTotal += Number(out.score || 0);
+        counts.set(key, row);
+    }
+    const sorted = [...counts.values()].sort((a,b)=>b.count-a.count || Math.abs(a.scoreTotal/a.count)-Math.abs(b.scoreTotal/b.count));
+    const most = sorted[0] || null;
+    return {
+        count:list.length,
+        meanScore: total/list.length,
+        most: most ? most.outcome : null,
+        mostCount: most ? most.count : 0,
+        frequency: most ? most.count/list.length : 0,
+        counts
+    };
+}
+
+function competitiveParStats(tables) {
+    const available = (tables || []).filter(Boolean);
+    if (!available.length) return null;
+    const declarers = parDeclarerMap(available);
+    const nsOut = [], ewOut = [], combined = [];
+    let same = 0;
+    for (const table of available) {
+        const a = competitiveParForTable(table, declarers, 'NS');
+        const b = competitiveParForTable(table, declarers, 'EW');
+        nsOut.push(a); ewOut.push(b); combined.push(a,b);
+        if (parOutcomeKey(a) === parOutcomeKey(b)) same++;
+    }
+    const ns = summarizeParOutcomes(nsOut);
+    const ew = summarizeParOutcomes(ewOut);
+    const both = summarizeParOutcomes(combined);
+    return {
+        count: available.length,
+        declarers,
+        ns,
+        ew,
+        both,
+        initiativeAgreement: available.length ? same / available.length : 0,
+        initiativeSensitiveShare: available.length ? 1 - same / available.length : 0,
+        meanScore: (ns.meanScore + ew.meanScore) / 2
+    };
+}
+
+function renderCompetitivePar(tables) {
+    const holder = document.getElementById('competitivePar');
+    if (!holder) return null;
+    const stats = competitiveParStats(tables);
+    if (!stats || !stats.count || !stats.both.most) { holder.hidden = true; holder.innerHTML = ''; return stats; }
+    const main = stats.both.most;
+    const mainText = parContractText(main);
+    const freq = stats.both.frequency * 100;
+    const sensitive = stats.initiativeSensitiveShare * 100;
+    const nsText = stats.ns.most ? `${parContractText(stats.ns.most)} · ${(stats.ns.frequency*100).toFixed(0)}% · moy. ${formatExpectedScore(stats.ns.meanScore)}` : '—';
+    const ewText = stats.ew.most ? `${parContractText(stats.ew.most)} · ${(stats.ew.frequency*100).toFixed(0)}% · moy. ${formatExpectedScore(stats.ew.meanScore)}` : '—';
+    const initiativeNote = sensitive >= 15
+        ? `L’initiative modifie le contrat final dans ${sensitive.toFixed(0)} % des distributions.`
+        : `Résultat peu sensible à l’initiative (${sensitive.toFixed(0)} % des distributions diffèrent).`;
+    holder.hidden = false;
+    holder.innerHTML = `<div class="competitive-par-head"><span class="competitive-par-title">PAR compétitif DD</span></div>
+      <div class="competitive-par-main"><span class="competitive-par-contract">${escapeHtml(mainText)}</span><span class="competitive-par-frequency">PAR le plus fréquent · ${freq.toFixed(0)} % des chemins d’initiative</span></div>
+      <div class="competitive-par-initiative">
+        <div><span>Initiative NS</span><strong>${escapeHtml(nsText)}</strong></div>
+        <div><span>Initiative EO</span><strong>${escapeHtml(ewText)}</strong></div>
+      </div>
+      <div class="competitive-par-note">${escapeHtml(initiativeNote)} Les sacrifices, contres et surcontres sont utilisés dans le calcul mais ne sont pas détaillés séparément. Déclarant fixé par dénomination sur l’échantillon pilote pour chaque camp.</div>`;
+    return stats;
+}
+
+function formatExpectedScore(value) {
+    const rounded = Math.round(Number(value || 0));
+    return `${rounded >= 0 ? '+' : '−'}${Math.abs(rounded)}`;
+}
+
 function wilsonInterval(wins, count, z = 1.96) {
     const n = Number(count || 0);
     if (!n) return { low: 0, high: 1, half: 1 };
@@ -1738,30 +2473,36 @@ function preferredDeclarerForStrain(tables, strain) {
     return { declarer: avgS > avgN ? 'S' : 'N', pilotCount };
 }
 
-function contractMakeStats(tables, strain, level) {
+function contractMakeStats(tables, strain, level, doubled = 0) {
     const available = (tables || []).filter(Boolean);
     const needed = Number(level) + 6;
-    if (!available.length) return { share: 0, declarer: 'N', count: 0, wins: 0, totalCount: 0, pilotCount: 0, rawN: 0, rawS: 0 };
+    if (!available.length) return { share: 0, declarer: 'N', count: 0, wins: 0, totalCount: 0, pilotCount: 0, rawN: 0, rawS: 0, meanScore: 0, scoreCount: 0, scoreSeries: [], trickSeries: [] };
 
     const successes = { N: [], S: [] };
+    const tricksBySeat = { N: [], S: [] };
     for (const table of available) {
-        for (const seat of ['N', 'S']) successes[seat].push(Number(table && table[strain] && table[strain][seat]) >= needed ? 1 : 0);
+        for (const seat of ['N', 'S']) {
+            const tricks = Number(table && table[strain] && table[strain][seat]);
+            tricksBySeat[seat].push(tricks);
+            successes[seat].push(Number.isInteger(tricks) && tricks >= needed ? 1 : 0);
+        }
     }
     const totalN = successes.N.reduce((a,b) => a+b, 0);
     const totalS = successes.S.reduce((a,b) => a+b, 0);
     const rawN = totalN / available.length;
     const rawS = totalS / available.length;
 
-    // Audit : le déclarant est désormais choisi UNE FOIS par dénomination, à partir
-    // du nombre moyen de levées sur l'échantillon pilote, puis conservé à tous les niveaux.
-    // Cela évite qu'une même couleur alterne artificiellement M1/M2 entre 2♠, 4♠ et 6♠
-    // et garantit une échelle de probabilités monotone quand on monte de niveau.
+    // Le déclarant est choisi une fois par dénomination sur le pilote puis figé.
     const choice = preferredDeclarerForStrain(available, strain);
     const declarer = choice.declarer;
     const pilotCount = choice.pilotCount;
     const evalValues = pilotCount ? successes[declarer].slice(pilotCount) : successes[declarer];
+    const evalTricks = (pilotCount ? tricksBySeat[declarer].slice(pilotCount) : tricksBySeat[declarer])
+        .filter(v => Number.isInteger(v) && v >= 0 && v <= 13);
     const wins = evalValues.reduce((a,b)=>a+b,0);
     const count = evalValues.length;
+    const scoreSeries = evalTricks.map(v => duplicateScore(level, strain, v, nsIsVulnerable(), doubled));
+    const meanScore = scoreSeries.length ? scoreSeries.reduce((a,b)=>a+b,0) / scoreSeries.length : 0;
     return {
         share: count ? wins / count : 0,
         declarer,
@@ -1770,38 +2511,63 @@ function contractMakeStats(tables, strain, level) {
         totalCount: available.length,
         pilotCount,
         rawN,
-        rawS
+        rawS,
+        meanScore,
+        scoreCount: scoreSeries.length,
+        scoreSeries,
+        trickSeries: evalTricks,
+        doubled,
+        vulnerable: nsIsVulnerable()
     };
 }
 
-function allContractStats(n, s, tables) {
-    const fits = fitInfos(n, s);
-    const totalH = highCardPoints(n) + highCardPoints(s);
-    const strains = [];
-    for (const info of fits) strains.push({ strain: info.suit, fit: info.length, trueFit: info.length >= 8 });
-    const ntPlausible = pairLooksBalancedForNT(n, s) || totalH >= 23;
-    if (ntPlausible) strains.push({ strain: 'N', fit: 0, trueFit: false });
-    const unique = [];
-    const seen = new Set();
-    for (const row of strains) if (!seen.has(row.strain)) { seen.add(row.strain); unique.push(row); }
+function pairedScoreDifferenceInterval(aStats, bStats, z = 1.96) {
+    const a = (aStats && aStats.scoreSeries) || [];
+    const b = (bStats && bStats.scoreSeries) || [];
+    const n = Math.min(a.length, b.length);
+    if (n < 2) return { mean: Number((aStats && aStats.meanScore) || 0) - Number((bStats && bStats.meanScore) || 0), low: -Infinity, high: Infinity, half: Infinity, n };
+    const diffs = [];
+    for (let i = 0; i < n; i++) diffs.push(Number(a[i]) - Number(b[i]));
+    const mean = diffs.reduce((x,y)=>x+y,0) / n;
+    const variance = diffs.reduce((acc,v)=>acc + (v-mean)*(v-mean),0) / Math.max(1,n-1);
+    const se = Math.sqrt(variance / n);
+    const half = z * se;
+    return { mean, low: mean-half, high: mean+half, half, n };
+}
 
-    return unique.map(info => {
+function allContractStats(n, s, tables) {
+    const fits = Object.fromEntries(fitInfos(n, s).map(info => [info.suit, info]));
+    const totalH = highCardPoints(n) + highCardPoints(s);
+    const ntPlausible = pairLooksBalancedForNT(n, s) || totalH >= 23;
+
+    // Audit V2 : on calcule désormais les CINQ dénominations en arrière-plan.
+    // "plausible" ne filtre plus le calcul ; il sert uniquement à éviter de polluer
+    // les recommandations avec des contrats artificiels, sauf anomalie DD/EV forte.
+    return ['S','H','D','C','N'].map(strain => {
+        const fitInfo = fits[strain];
+        const fit = fitInfo ? fitInfo.length : (strain === 'N' ? 0 : pairSuitLength(n, s, strain));
+        const trueFit = strain !== 'N' && fit >= 8;
+        const plausible = strain === 'N' ? ntPlausible : fit >= 7;
         const levels = {};
-        for (let level = 1; level <= 7; level++) levels[level] = contractMakeStats(tables, info.strain, level);
+        for (let level = 1; level <= 7; level++) levels[level] = contractMakeStats(tables, strain, level);
         let frontier = 0;
         for (let level = 1; level <= 7; level++) if (levels[level].share >= 0.50) frontier = level;
-        return { ...info, levels, frontier, gameLevel: naturalGameLevel(info.strain) };
+        return { strain, fit, trueFit, plausible, levels, frontier, gameLevel: naturalGameLevel(strain) };
     });
 }
 
 function contextualForceText(totalKr, scan) {
-    const bestGame = scan.reduce((m,row)=>Math.max(m, row.levels[row.gameLevel].share),0);
-    const bestSlam = scan.reduce((m,row)=>Math.max(m, row.levels[6].share),0);
-    if (bestSlam >= 0.50) return 'Potentiel DDS : chelem favorable';
-    if (bestSlam >= 0.20) return 'Potentiel DDS : chelem possible';
-    if (bestGame >= 0.65) return 'Potentiel DDS : manche favorable';
-    if (bestGame >= 0.35) return 'Potentiel DDS : manche possible';
-    return 'Potentiel DDS : partielle';
+    const plausible = scan.filter(row => row.plausible || row.trueFit);
+    let bestEv = null;
+    for (const row of (plausible.length ? plausible : scan)) {
+        for (let level = 1; level <= 7; level++) {
+            const stats = row.levels[level];
+            if (!stats || stats.share < 0.03) continue;
+            if (!bestEv || stats.meanScore > bestEv.stats.meanScore) bestEv = { row, level, stats };
+        }
+    }
+    if (!bestEv) return 'Lecture statistique en cours';
+    return `Meilleure EV DD : ${contractNameText(bestEv.level, bestEv.row.strain)} · EV ${formatExpectedScore(bestEv.stats.meanScore)} · réussite ${(bestEv.stats.share*100).toFixed(0)} %`;
 }
 
 // Partielle naturelle d'un vrai fit. On part du niveau correspondant au nombre
@@ -1828,149 +2594,101 @@ function intelligentContractCandidates(n, s, totalKr, tables = []) {
     const scan = allContractStats(n, s, available);
     const candidates = [];
     const seen = new Set();
-    const add = (row, level, reason) => {
+
+    const add = (row, level, reason, practical = false) => {
         if (!row || level < 1 || level > 7) return;
         const key = `${level}${row.strain}`;
-        if (seen.has(key)) return;
-        seen.add(key);
+        if (seen.has(key)) {
+            const existing = candidates.find(c => `${c.level}${c.strain}` === key);
+            if (existing && practical) existing.practical = true;
+            return;
+        }
         const stats = row.levels[level];
+        if (!stats) return;
+        seen.add(key);
         const band = level >= 6 ? 'slam' : (level === row.gameLevel ? 'game' : 'partial');
-        candidates.push({ level, strain: row.strain, fit: row.fit, trueFit: row.trueFit, reason, band, share: stats.share, stats });
+        candidates.push({ level, strain: row.strain, fit: row.fit, trueFit: row.trueFit, plausible: row.plausible, reason, band, share: stats.share, stats, practical });
     };
 
-    for (const row of scan) {
+    // 1) Base naturelle : une partielle du fit, la manche naturelle, puis chelem si
+    // sa valeur de score espérée est réellement concurrentielle avec la manche.
+    for (const row of scan.filter(r => r.plausible || r.trueFit)) {
         const game = row.levels[row.gameLevel];
+        const partialLevel = row.trueFit ? naturalFitPartialLevel(row) : Math.max(1, Math.min(row.gameLevel - 1, row.frontier || 1));
+        const partial = row.levels[partialLevel];
+        if (row.trueFit || (partial && partial.share >= 0.45)) add(row, partialLevel, row.trueFit ? 'fit-partial' : 'best-partial');
+
+        // On affiche la manche si elle n'est pas quasi morte OU si son EV bat la partielle.
+        if (game && (game.share >= 0.15 || game.meanScore >= (partial ? partial.meanScore : -Infinity) - 20)) add(row, row.gameLevel, 'ev-game');
+
         const slam = row.levels[6];
-        const grand = row.levels[7];
-        const gameThresholdKr = row.strain === 'N' ? 25 : ((row.strain === 'H' || row.strain === 'S') ? 24 : 27);
+        if (slam && slam.share >= 0.08 && slam.meanScore >= game.meanScore - 35) add(row, 6, 'ev-slam');
 
-        // La manche naturelle d'un vrai fit est montrée dès qu'elle est proche de la frontière,
-        // ou que la force combinée la rend théoriquement pertinente.
-        // Une manche naturelle peut être théoriquement pertinente en K&R sans être
-        // réellement jouable dans les distributions DDS (cas typique : second fit très faible).
-        // On ne pollue donc plus les recommandations avec une manche quasi morte ; elle reste
-        // consultable dans l'échelle / la matrice complète.
-        if (row.trueFit && game.share >= 0.20 && (row.frontier >= row.gameLevel - 1 || totalKr >= gameThresholdKr - 1)) add(row, row.gameLevel, 'fit-game');
-        else if (!row.trueFit && game.share >= 0.50) add(row, row.gameLevel, 'dds-game');
-
-        // Détection opportuniste des chelems. L'échelle affiche déjà tous les niveaux : dans
-        // les recommandations, on garde uniquement les chelems ayant un minimum de présence
-        // statistique afin d'éviter les 6x à 0 % déclenchés par une manche très solide.
-        if ((row.trueFit || row.strain === 'N') && slam.share >= 0.08 && (row.frontier >= 6 || game.share >= 0.75 || slam.share >= 0.15)) add(row, 6, 'slam-opportunity');
-
-        // Niveau 7 : uniquement avec contrôles de premier tour en couleur, et vraie présence DDS.
-        if (row.strain !== 'N' && grandControlsOk(n, s, row.strain) && grand.share >= 0.10 && slam.share >= 0.55) add(row, 7, 'grand-opportunity');
-    }
-
-    // Un vrai fit ne doit jamais être évincé par une partielle hors fit. Si la manche
-    // dans le fit n'est pas très solide, on montre d'abord la partielle naturelle du fit.
-    // Exemples : fit 8e -> 2M/2m ; fit 9e -> 3M/3m ; fit 10e majeur -> 3M (juste sous 4M).
-    const trueFitRows = scan
-        .filter(row => row.trueFit)
-        .sort((a,b) => b.fit - a.fit || b.levels[naturalFitPartialLevel(b)].share - a.levels[naturalFitPartialLevel(a)].share);
-    for (const row of trueFitRows) {
-        const gameShare = row.levels[row.gameLevel].share;
-        if (gameShare < 0.70) add(row, naturalFitPartialLevel(row), 'fit-partial');
-    }
-
-    // Compléter ensuite, si nécessaire, avec les meilleures partielles DDS dans les
-    // autres dénominations plausibles. Les contrats dans un vrai fit restent prioritaires.
-    const hasFavouredGame = scan.some(row => row.levels[row.gameLevel].share >= 0.50);
-    if (!hasFavouredGame) {
-        const partialRows = scan
-            .filter(row => row.frontier > 0 && row.frontier < row.gameLevel)
-            .sort((a,b) => {
-                if (a.trueFit !== b.trueFit) return Number(b.trueFit) - Number(a.trueFit);
-                return b.levels[b.frontier].share - a.levels[a.frontier].share || b.fit - a.fit;
-            });
-        for (const row of partialRows) add(row, row.frontier, row.trueFit ? 'fit-frontier' : 'best-partial');
-    }
-
-    // Surprises DDS globales : ne jamais rater une manche/chelem objectivement fort dans une
-    // dénomination plausible, même si le K&R ou la première structure ne l'avaient pas suggéré.
-    for (const row of scan) {
-        if (row.levels[row.gameLevel].share >= 0.60) add(row, row.gameLevel, 'dds-strong-game');
-        if (row.levels[6].share >= 0.25) add(row, 6, 'dds-strong-slam');
-    }
-
-    const sortWithinBand = (a,b) => {
-        // Dans les partielles, priorité absolue au vrai fit : une partielle à SA ou
-        // dans une couleur secondaire ne doit jamais masquer le contrat naturel du fit.
-        if (a.band === 'partial' && b.band === 'partial') {
-            if (a.trueFit !== b.trueFit) return Number(b.trueFit) - Number(a.trueFit);
-            const aFitNatural = a.reason === 'fit-partial' || a.reason === 'fit-frontier';
-            const bFitNatural = b.reason === 'fit-partial' || b.reason === 'fit-frontier';
-            if (aFitNatural !== bFitNatural) return Number(bFitNatural) - Number(aFitNatural);
-            if (a.fit !== b.fit) return b.fit-a.fit;
-            if (Math.abs(a.share-b.share) > 1e-9) return b.share-a.share;
-            if (a.level !== b.level) return b.level-a.level;
-        } else {
-            if (a.level !== b.level) return b.level - a.level;
-            if (Math.abs(a.share-b.share) > 1e-9) return b.share-a.share;
-            if (a.fit !== b.fit) return b.fit-a.fit;
+        if (row.strain !== 'N') {
+            const grand = row.levels[7];
+            const structure = slamStructureInfo(n, s, row.strain, 7);
+            const structurallyReady = structure && grandControlsOk(n, s, row.strain) && structure.trumpQ && structure.fit >= 8;
+            if (structurallyReady && grand.share >= 0.06 && grand.meanScore >= slam.meanScore - 35) add(row, 7, 'ev-grand');
         }
-        return ['S','H','D','C','N'].indexOf(a.strain)-['S','H','D','C','N'].indexOf(b.strain);
-    };
+    }
+
+    // 2) Contrat pratique V3 : on ne confond plus automatiquement meilleure EV DD
+    // et recommandation pratique. Pour un chelem, l'EV fermée doit être réellement
+    // modélisée ; sinon le chelem reste affiché comme « meilleure EV DD à confirmer ».
+    let practicalBest = null;
+    let rawBest = null;
+    for (const row of scan.filter(r => r.plausible || r.trueFit)) {
+        for (let level = 1; level <= 7; level++) {
+            const st = row.levels[level];
+            if (!st || st.share < 0.03) continue;
+            if (!rawBest || st.meanScore > rawBest.stats.meanScore) rawBest = { row, level, stats: st };
+            let metric = st.meanScore;
+            let closed = null;
+            if (level >= 6) {
+                closed = closedCardEstimate(n, s, row.strain, level, available);
+                if (!closed.modeled) continue; // pas de label « pratique » sans validation fermée du chelem
+                metric = Number.isFinite(closed.meanScore) ? closed.meanScore : st.meanScore;
+            }
+            if (!practicalBest || metric > practicalBest.metric) practicalBest = { row, level, stats: st, metric, closed };
+        }
+    }
+    if (practicalBest) add(practicalBest.row, practicalBest.level, 'best-practical', true);
+    // La meilleure EV DD brute reste visible, même si son closed-card n'est pas couvert.
+    if (rawBest) add(rawBest.row, rawBest.level, rawBest.level >= 6 ? 'best-dd-unvalidated' : 'best-ev');
+
+    // 3) Anomalies DDS : on calcule toutes les couleurs ; une dénomination non naturelle
+    // ne remonte que si elle bat nettement le meilleur contrat naturel en EV.
+    const baselineEv = rawBest ? rawBest.stats.meanScore : -Infinity;
+    for (const row of scan.filter(r => !r.plausible && !r.trueFit)) {
+        let best = null;
+        for (let level = 1; level <= 7; level++) {
+            const st = row.levels[level];
+            if (!st || st.share < 0.20) continue;
+            if (!best || st.meanScore > best.stats.meanScore) best = { level, stats: st };
+        }
+        if (best && best.stats.meanScore >= baselineEv + EV_ANOMALY_MARGIN) add(row, best.level, 'dds-anomaly');
+    }
+
+    // 4) Sélection compacte : deux cartes max par bande, d'abord contrat pratique,
+    // puis EV, tout en gardant des dénominations distinctes quand elles sont proches.
     const pickBand = band => {
-        const sorted = candidates.filter(c => c.band === band).sort(sortWithinBand);
-        if (sorted.length <= 2) return sorted;
-
+        const rows = candidates.filter(c => c.band === band).sort((a,b) => {
+            if (a.practical !== b.practical) return Number(b.practical) - Number(a.practical);
+            if (Math.abs(a.stats.meanScore - b.stats.meanScore) > 1e-9) return b.stats.meanScore - a.stats.meanScore;
+            if (a.trueFit !== b.trueFit) return Number(b.trueFit) - Number(a.trueFit);
+            return b.share - a.share;
+        });
+        if (rows.length <= 2) return rows;
         const picked = [];
-        const push = candidate => {
-            if (candidate && !picked.includes(candidate) && picked.length < 2) picked.push(candidate);
-        };
-
-        if (band === 'partial') {
-            // Une partielle naturelle par vrai fit AVANT d'afficher un deuxième niveau de la
-            // même couleur. Sinon un 3♣/4♣ pouvait occuper les deux cases et faire disparaître
-            // complètement 2♥ malgré un second fit 8e.
-            const naturalFit = sorted
-                .filter(c => c.trueFit && c.reason === 'fit-partial')
-                .sort((a,b) => b.fit - a.fit || b.share - a.share || sortWithinBand(a,b));
-            const represented = new Set();
-            for (const candidate of naturalFit) {
-                if (represented.has(candidate.strain)) continue;
-                push(candidate);
-                represented.add(candidate.strain);
-                if (picked.length === 2) return picked;
-            }
-            // Si un fit n'a pas de candidat « fit-partial », sa frontière peut le représenter,
-            // mais toujours une seule fois avant de compléter avec un second niveau.
-            const fitFrontiers = sorted
-                .filter(c => c.trueFit && !represented.has(c.strain))
-                .sort((a,b) => b.fit - a.fit || b.share - a.share || sortWithinBand(a,b));
-            for (const candidate of fitFrontiers) {
-                if (represented.has(candidate.strain)) continue;
-                push(candidate);
-                represented.add(candidate.strain);
-                if (picked.length === 2) return picked;
-            }
-        } else {
-            // Pour manches/chelems, conserver en priorité les vrais fits distincts.
-            const fitFirst = sorted.filter(c => c.trueFit).sort((a,b) => b.fit - a.fit || b.share - a.share || sortWithinBand(a,b));
-            const represented = new Set();
-            for (const candidate of fitFirst) {
-                if (represented.has(candidate.strain)) continue;
-                push(candidate);
-                represented.add(candidate.strain);
-                if (picked.length === 2) return picked;
-            }
+        for (const row of rows) {
+            if (!picked.length) { picked.push(row); continue; }
+            if (picked.length === 1 && !picked.some(p => p.strain === row.strain)) { picked.push(row); break; }
         }
-
-        for (const candidate of sorted) {
-            // Dans les partielles, un seul niveau par dénomination suffit : l'échelle juste
-            // au-dessus donne déjà 2/3/4/etc. Garder deux niveaux de la même couleur pouvait
-            // masquer une autre couleur jouable et alourdissait inutilement l'écran.
-            if (band === 'partial' && picked.some(p => p.strain === candidate.strain)) continue;
-            push(candidate);
-            if (picked.length === 2) break;
-        }
-        return picked;
+        if (picked.length < 2) picked.push(rows.find(r => !picked.includes(r)));
+        return picked.filter(Boolean).slice(0,2);
     };
-    const slams = pickBand('slam');
-    const games = pickBand('game');
-    const partials = pickBand('partial');
-    return [...slams, ...games, ...partials];
+
+    return [...pickBand('slam'), ...pickBand('game'), ...pickBand('partial')];
 }
 
 function fitSummaryHtml(n, s) {
@@ -1980,12 +2698,40 @@ function fitSummaryHtml(n, s) {
     return `<strong>Fit${fits.length > 1 ? 's' : ''} détecté${fits.length > 1 ? 's' : ''}</strong> · ${parts.join(' · ')}`;
 }
 
+function decisionPoolForRefinement(n, s, tables) {
+    const scan = allContractStats(n, s, tables);
+    const pool = [];
+    for (const row of scan) {
+        if (!row.plausible && !row.trueFit) continue;
+        const levels = new Set([row.gameLevel, row.trueFit ? naturalFitPartialLevel(row) : Math.max(1, Math.min(row.gameLevel-1, row.frontier || 1)), 6]);
+        for (const level of levels) {
+            const stats = row.levels[level];
+            if (stats && stats.share >= 0.03) pool.push({ row, level, stats });
+        }
+    }
+    return pool.sort((a,b)=>b.stats.meanScore-a.stats.meanScore).slice(0,5);
+}
+
+function decisionNeedsMoreSamples(n, s, tables) {
+    const pool = decisionPoolForRefinement(n, s, tables);
+    if (pool.length < 2) return false;
+    const top = pool[0];
+    for (const rival of pool.slice(1,4)) {
+        const ci = pairedScoreDifferenceInterval(top.stats, rival.stats);
+        const observedGap = Math.abs(top.stats.meanScore - rival.stats.meanScore);
+        // On affine si l'ordre EV n'est pas statistiquement résolu ou si l'écart observé
+        // reste petit à l'échelle du score d'une donne.
+        if ((ci.low <= 0 && ci.high >= 0) || observedGap <= EV_DECISION_MARGIN) return true;
+    }
+    return false;
+}
+
 function shouldRefineProbabilities(n, s, tables) {
     const available = (tables || []).filter(Boolean);
     if (available.length < INITIAL_SAMPLE_COUNT) return false;
+    if (decisionNeedsMoreSamples(n, s, available)) return true;
     const totalKr = computeKaplanRubens(n) + computeKaplanRubens(s);
     const candidates = intelligentContractCandidates(n, s, totalKr, available);
-    if (!candidates.length) return false;
     return candidates.some(candidate => {
         const stats = candidate.stats || contractMakeStats(available, candidate.strain, candidate.level);
         if (stats.share <= 0.02 || stats.share >= 0.98) return false;
@@ -2000,6 +2746,13 @@ function contractNameHtml(level, strain) {
     return `<span class="contract-label">${level}<span class="${cls}">${symbol}</span></span>`;
 }
 
+function suitSymbolHtml(suit) {
+    if (suit === 'N') return 'SA';
+    const cls = { S: 'spade', H: 'heart', D: 'diamond', C: 'club' }[suit] || '';
+    const symbol = SUIT_SYMBOL[suit] || suit;
+    return `<span class="${cls}">${symbol}</span>`;
+}
+
 let lastContractTables = [];
 let selectedContract = null;
 let lastProbabilityHands = null;
@@ -2012,13 +2765,13 @@ function parseManualContract(raw) {
     const m = normalized.match(/^([1-7])(SA|P|C|K|T)$/);
     if (!m) return null;
     const map = { P: 'S', C: 'H', K: 'D', T: 'C', SA: 'N' };
-    return { level: Number(m[1]), strain: map[m[2]], typed: `${m[1]}${m[2]}` };
+    return { level: Number(m[1]), strain: map[m[2]], doubled: 0, typed: `${m[1]}${m[2]}` };
 }
 
 function statsTooltip(stats) {
     const ci = wilsonInterval(stats.wins, stats.count);
     const d = stats.declarer === 'N' ? 'Main 1' : 'Main 2';
-    return `${d} retenue · IC 95 % ≈ ${(ci.low*100).toFixed(0)}–${(ci.high*100).toFixed(0)} % · Main 1 brut ${(stats.rawN*100).toFixed(0)} % · Main 2 brut ${(stats.rawS*100).toFixed(0)} %`;
+    return `${d} retenue · IC 95 % ≈ ${(ci.low*100).toFixed(0)}–${(ci.high*100).toFixed(0)} % · EV score ${stats.vulnerable ? 'V' : 'NV'}${stats.doubled===1 ? ' contré' : stats.doubled===2 ? ' surcontré' : ' non contré'} ${formatExpectedScore(stats.meanScore)} · Main 1 brut ${(stats.rawN*100).toFixed(0)} % · Main 2 brut ${(stats.rawS*100).toFixed(0)} %`;
 }
 
 function trickDistributionForContract(tables, strain, level, stats) {
@@ -2074,19 +2827,19 @@ function recommendationWhy(candidate, n, s, tables) {
             return `La manche ${gameName} dépasse 50 % de réussite DDS (${(gameStats.share*100).toFixed(0)} %), même sans vrai fit prioritaire.`;
         case 'slam-opportunity': {
             const slam = row.levels[6];
-            if (row.frontier >= 6) return `La frontière DDS atteint le niveau 6 : le petit chelem est naturellement à explorer (${(slam.share*100).toFixed(0)} %).`;
+            if (row.frontier >= 6) return `La frontière double-dummy atteint le niveau 6 (${(slam.share*100).toFixed(0)} % DD). La structure du chelem est analysée séparément ci-dessous.`;
             if (gameStats.share >= 0.75) {
                 if (slam.share < 0.15) return `La manche est très solide (${(gameStats.share*100).toFixed(0)} %), ce qui déclenche un test exploratoire du petit chelem. Celui-ci ne ressort toutefois qu’à ${(slam.share*100).toFixed(0)} % : il est affiché pour information, pas comme contrat favori.`;
                 return `La manche est très solide (${(gameStats.share*100).toFixed(0)} %), donc le moteur explore automatiquement le petit chelem, qui conserve ${(slam.share*100).toFixed(0)} % de réussite DDS.`;
             }
-            return `Le petit chelem lui-même conserve une fréquence DDS significative (${(slam.share*100).toFixed(0)} %), suffisante pour être affichée.`;
+            return `Le petit chelem conserve une fréquence double-dummy significative (${(slam.share*100).toFixed(0)} % DD), suffisante pour être affiché ; cela ne préjuge pas de sa sécurité structurelle.`;
         }
         case 'grand-opportunity':
             return `Le petit chelem est déjà solide et les contrôles de premier tour sont présents ; le grand chelem conserve ${pct} % de réussite DDS.`;
         case 'dds-strong-game':
             return `Surprise DDS : cette manche atteint ${pct} % de réussite, au-dessus du seuil qui empêche le moteur de rater une manche objectivement forte.`;
         case 'dds-strong-slam':
-            return `Surprise DDS : ce petit chelem atteint ${pct} % de réussite, donc il reste visible même s’il ne découle pas directement de la structure K&R.`;
+            return `Signal DD : ce petit chelem atteint ${pct} % à cartes ouvertes, donc il reste visible même s’il ne découle pas directement de la structure K&R.`;
         default:
             return `Ce contrat a été retenu par la sélection automatique à ${pct} % de réussite DDS.`;
     }
@@ -2097,11 +2850,760 @@ function contractNameText(level, strain) {
     return `${level}${SUIT_SYMBOL[strain] || strain}`;
 }
 
+function suitNameFr(suit) {
+    return { S: 'Pique', H: 'Cœur', D: 'Carreau', C: 'Trèfle' }[suit] || suit;
+}
+
+function firstRoundControlDetail(n, s, suit, trump) {
+    if (handHasRank(n, suit, 'A') || handHasRank(s, suit, 'A')) return { ok: true, type: 'ace', text: 'As' };
+    if (suit !== trump) {
+        const nVoid = handSuitLength(n, suit) === 0 && handSuitLength(n, trump) > 0;
+        const sVoid = handSuitLength(s, suit) === 0 && handSuitLength(s, trump) > 0;
+        if (nVoid && sVoid) return { ok: true, type: 'ruff', text: 'coupe M1/M2' };
+        if (nVoid) return { ok: true, type: 'ruff', text: 'coupe M1' };
+        if (sVoid) return { ok: true, type: 'ruff', text: 'coupe M2' };
+    }
+    return { ok: false, type: 'none', text: '—' };
+}
+
+function sideKingInfo(n, s, strain) {
+    const suits = strain === 'N' ? SUITS : SUITS.filter(suit => suit !== strain);
+    const present = suits.filter(suit => handHasRank(n, suit, 'K') || handHasRank(s, suit, 'K'));
+    return { present, total: suits.length, missing: suits.filter(suit => !present.includes(suit)) };
+}
+
+function shortnessValueSignals(n, s, trump) {
+    const signals = [];
+    for (const suit of SUITS) {
+        if (suit === trump) continue;
+        const nLen = handSuitLength(n, suit), sLen = handSuitLength(s, suit);
+        const describe = (honorHand, shortLen, shortSeat) => {
+            if (shortLen > 1) return;
+            const holding = exactHolding(honorHand && honorHand[suit] || '');
+            const honors = ['K','Q','J'].filter(r => holding.includes(r));
+            if (!honors.length) return;
+            const shortText = shortLen === 0 ? 'chicane' : 'singleton';
+            signals.push(`${SUIT_SYMBOL[suit]} ${honors.join('')} face à ${shortText} ${shortSeat}`);
+        };
+        describe(n, sLen, 'M2');
+        describe(s, nLen, 'M1');
+    }
+    return [...new Set(signals)];
+}
+
+function slamStructureInfo(n, s, strain, level = 6) {
+    if (!n || !s) return null;
+    const aces = SUITS.filter(suit => handHasRank(n, suit, 'A') || handHasRank(s, suit, 'A'));
+    const missingAces = SUITS.filter(suit => !aces.includes(suit));
+    const isSuit = strain !== 'N';
+    const trump = isSuit ? strain : null;
+    const fit = isSuit ? pairSuitLength(n, s, strain) : 0;
+    const trumpA = isSuit && (handHasRank(n, strain, 'A') || handHasRank(s, strain, 'A'));
+    const trumpK = isSuit && (handHasRank(n, strain, 'K') || handHasRank(s, strain, 'K'));
+    const trumpQ = isSuit && (handHasRank(n, strain, 'Q') || handHasRank(s, strain, 'Q'));
+    const trumpJ = isSuit && (handHasRank(n, strain, 'J') || handHasRank(s, strain, 'J'));
+    const trumpT = isSuit && (handHasRank(n, strain, 'T') || handHasRank(s, strain, 'T'));
+    const keycards = isSuit ? aces.length + (trumpK ? 1 : 0) : aces.length;
+    const keyTotal = isSuit ? 5 : 4;
+    const controls = SUITS.map(suit => ({ suit, ...firstRoundControlDetail(n, s, suit, trump) }));
+    const missingControls = controls.filter(x => !x.ok).map(x => x.suit);
+    const sideKings = sideKingInfo(n, s, strain);
+    const valueSignals = shortnessValueSignals(n, s, trump);
+    const issues = [];
+    if (missingAces.length) issues.push(`${missingAces.length} As manquant${missingAces.length > 1 ? 's' : ''}`);
+    if (isSuit && !trumpQ) issues.push("Dame d’atout manquante");
+    if (isSuit && fit < 8) issues.push(`fit seulement ${fit}e`);
+
+    let rating = 'Structure solide';
+    if (Number(level) >= 7) {
+        if (missingControls.length || (isSuit && (!trumpA || !trumpK))) rating = 'Grand chelem très fragile';
+        else if (isSuit && !trumpQ) rating = 'Grand chelem fragile';
+        else if (valueSignals.length >= 2) rating = 'Grand chelem à surveiller';
+        else rating = 'Structure de grand chelem solide';
+    } else {
+        if (missingControls.length >= 2 || (missingControls.length >= 1 && isSuit && !trumpQ)) rating = 'Structure fragile';
+        else if (missingControls.length || (isSuit && !trumpQ) || valueSignals.length >= 2) rating = 'Structure à surveiller';
+    }
+
+    const controlsText = controls.map(x => `${SUIT_SYMBOL[x.suit]} ${x.text}`).join(' · ');
+    const trumpText = isSuit
+        ? `Atout : fit ${fit}e · ${trumpA ? 'A' : 'A manquant'} · ${trumpK ? 'R' : 'R manquant'} · ${trumpQ ? 'D' : 'D manquante'} · ${trumpJ ? 'V' : 'V manquant'}`
+        : 'Sans-atout : lecture des As, Rois et contrôles';
+    return { aces, missingAces, fit, trumpA, trumpK, trumpQ, trumpJ, trumpT, keycards, keyTotal, controls, missingControls, sideKings, valueSignals, issues, rating, controlsText, trumpText, level: Number(level) || 6 };
+}
+
+// Cartes fermées V5 — politiques communes, communications et ordre de jeu.
+// Contrairement à la V1, on n'applique plus de coefficient arbitraire au pourcentage DDS.
+// Pour les maniements d'atout simples (Dame manquante avec AR, ou Roi manquant avec AD),
+// une SEULE politique est choisie sur l'échantillon pilote puis rejouée sur les distributions
+// d'évaluation. La politique ne peut donc pas changer selon la position cachée de l'honneur.
+// Le reste du jeu demeure évalué par DDS : ce n'est pas encore un solveur single-dummy complet,
+// mais la correction d'atout est désormais directement mesurée sur les distributions simulées.
+function hiddenDealFromTable(table) {
+    return table && table.__deal ? table.__deal : null;
+}
+
+function hiddenOpponentSuitLength(deal, seat, suit) {
+    return String(deal && deal[seat] && deal[seat][suit] || '').length;
+}
+
+function hiddenOpponentHasRank(deal, seat, suit, rank) {
+    return String(deal && deal[seat] && deal[seat][suit] || '').includes(rank);
+}
+
+// V3 : certains honneurs inférieurs manquants ne créent en réalité aucun choix caché.
+// Exemple : avec un fit 10e et ARD d'atout, les trois atouts adverses sont couverts par
+// trois honneurs maîtres : le Valet manquant ne justifie donc aucune pénalité « cartes fermées ».
+function trumpCanBeClearedWithoutGuess(n, s, strain) {
+    if (!n || !s || strain === 'N') return null;
+    const fit = pairSuitLength(n, s, strain);
+    const missing = Math.max(0, 13 - fit);
+    if (!missing) return { ok: true, fit, missing, topRun: 13, text: 'aucun atout adverse' };
+    let topRun = 0;
+    for (const rank of RANKS) {
+        if (handHasRank(n, strain, rank) || handHasRank(s, strain, rank)) topRun++;
+        else break;
+    }
+    if (topRun >= missing) {
+        return { ok: true, fit, missing, topRun, text: `${topRun} honneur${topRun>1?'s':''} maître${topRun>1?'s':''} pour ${missing} atout${missing>1?'s':''} adverse${missing>1?'s':''}` };
+    }
+    return { ok: false, fit, missing, topRun, text: 'séquence d’atout non continue' };
+}
+
+function trumpPolicyCandidates(n, s, strain) {
+    if (!n || !s || strain === 'N') return null;
+    const has = rank => handHasRank(n, strain, rank) || handHasRank(s, strain, rank);
+    const fit = pairSuitLength(n, s, strain);
+
+    // Cas 1 : AR sans Dame. On compare une ligne de tirage et les deux directions d'impasse.
+    if (has('A') && has('K') && !has('Q')) {
+        return {
+            rank: 'Q', fit,
+            label: 'Dame d’atout',
+            policies: [
+                { id: 'cash', text: 'tirer A-R' },
+                { id: 'finesseE', text: 'impasse fixe contre Est' },
+                { id: 'finesseW', text: 'impasse fixe contre Ouest' }
+            ]
+        };
+    }
+
+    // Cas 2 : AD sans Roi. Même logique pour un maniement simple du Roi.
+    if (has('A') && has('Q') && !has('K')) {
+        return {
+            rank: 'K', fit,
+            label: 'Roi d’atout',
+            policies: [
+                { id: 'cash', text: 'tirer l’As' },
+                { id: 'finesseE', text: 'impasse fixe contre Est' },
+                { id: 'finesseW', text: 'impasse fixe contre Ouest' }
+            ]
+        };
+    }
+    return null;
+}
+
+function trumpPolicySucceedsOnDeal(policyId, rank, strain, deal) {
+    if (!deal) return true;
+    const eHas = hiddenOpponentHasRank(deal, 'E', strain, rank);
+    const wHas = hiddenOpponentHasRank(deal, 'W', strain, rank);
+    if (!eHas && !wHas) return true;
+    const holder = eHas ? 'E' : 'W';
+    const other = holder === 'E' ? 'W' : 'E';
+    const holderLen = hiddenOpponentSuitLength(deal, holder, strain);
+
+    if (policyId === 'cash') {
+        // AR contre la Dame : elle tombe si son détenteur n'a pas plus de 2 cartes.
+        // A contre le Roi : il tombe uniquement s'il est sec.
+        return rank === 'Q' ? holderLen <= 2 : holderLen <= 1;
+    }
+    if (policyId === 'finesseE') {
+        if (eHas) return true;
+        // Une ligne standard peut encore ramasser l'honneur adverse sec de l'autre côté.
+        return wHas && hiddenOpponentSuitLength(deal, 'W', strain) === 1;
+    }
+    if (policyId === 'finesseW') {
+        if (wHas) return true;
+        return eHas && hiddenOpponentSuitLength(deal, 'E', strain) === 1;
+    }
+    return true;
+}
+
+function policyContractEffectiveTricks(table, strain, declarer, policySpec, policyId) {
+    const tricks = Number(table && table[strain] && table[strain][declarer]);
+    if (!Number.isInteger(tricks)) return null;
+    const deal = hiddenDealFromTable(table);
+    if (!deal || !policySpec) return tricks;
+    const policyOk = trumpPolicySucceedsOnDeal(policyId, policySpec.rank, strain, deal);
+    // Modèle V3 : une mauvaise décision d'atout coûte au plus une levée.
+    return Math.max(0, tricks - (policyOk ? 0 : 1));
+}
+
+function policyContractSuccess(table, strain, needed, declarer, policySpec, policyId) {
+    const effectiveTricks = policyContractEffectiveTricks(table, strain, declarer, policySpec, policyId);
+    return effectiveTricks === null ? null : effectiveTricks >= needed;
+}
+
+function chooseTrumpPolicy(n, s, strain, level, tables, dd) {
+    const spec = trumpPolicyCandidates(n, s, strain);
+    if (!spec) return null;
+    const available = (tables || []).filter(Boolean);
+    const pilotCount = Number(dd && dd.pilotCount || 0);
+    const pilot = pilotCount ? available.slice(0, pilotCount) : available;
+    const needed = Number(level) + 6;
+    const declarer = dd && dd.declarer ? dd.declarer : 'N';
+    if (!pilot.length || !pilot.some(t => hiddenDealFromTable(t))) return null;
+
+    let best = null;
+    for (const policy of spec.policies) {
+        let wins = 0, count = 0;
+        for (const table of pilot) {
+            const ok = policyContractSuccess(table, strain, needed, declarer, spec, policy.id);
+            if (ok === null) continue;
+            count++;
+            if (ok) wins++;
+        }
+        const share = count ? wins / count : 0;
+        const row = { ...policy, share, wins, count };
+        if (!best || row.share > best.share + 1e-12) best = row;
+        // En cas d'égalité, l'ordre stable ci-dessus conserve la ligne la plus simple.
+    }
+    return best ? { spec, policy: best } : null;
+}
+
+
+// --- V5 hors atout / communications / timing ------------------------------
+// On modélise les décisions les plus fréquentes où une même ligne doit être choisie
+// sans connaître la position d'un honneur adverse. Contrairement à une pénalité fixe,
+// la ligne est choisie sur le pilote et mesurée sur les distributions d'évaluation.
+// La géométrie N/S permet de déterminer l'adversaire visé par une impasse vers la main
+// qui porte la fourchette : vers Nord => Est est sous la fourchette ; vers Sud => Ouest.
+function pairHasRank(n, s, suit, rank) {
+    return handHasRank(n, suit, rank) || handHasRank(s, suit, rank);
+}
+
+function handHasAllRanks(hand, suit, ranks) {
+    return [...ranks].every(rank => handHasRank(hand, suit, rank));
+}
+
+function finesseTargetForTenaceSeat(seat) {
+    return seat === 'N' ? 'E' : 'W';
+}
+
+function sideSuitTopRun(n, s, suit) {
+    let topRun = 0;
+    for (const rank of RANKS) {
+        if (pairHasRank(n, s, suit, rank)) topRun++;
+        else break;
+    }
+    return topRun;
+}
+
+function sideSuitCanBeClearedWithoutGuess(n, s, suit) {
+    const pairLen = pairSuitLength(n, s, suit);
+    const missing = Math.max(0, 13 - pairLen);
+    const topRun = sideSuitTopRun(n, s, suit);
+    return { ok: missing === 0 || topRun >= missing, pairLen, missing, topRun };
+}
+
+function sideSuitPolicyCandidates(n, s, trump) {
+    const specs = [];
+    for (const suit of SUITS) {
+        if (suit === trump) continue;
+        const pairLen = pairSuitLength(n, s, suit);
+        if (pairLen < 5) continue; // une couleur trop courte est rarement le moteur du contrat.
+        const clear = sideSuitCanBeClearedWithoutGuess(n, s, suit);
+        if (clear.ok) continue;
+
+        for (const seat of ['N','S']) {
+            const hand = seat === 'N' ? n : s;
+            const target = finesseTargetForTenaceSeat(seat);
+
+            // Impasse simple au Roi : AQ dans la même main, Roi adverse.
+            if (handHasAllRanks(hand, suit, 'AQ') && !pairHasRank(n, s, suit, 'K')) {
+                specs.push({
+                    kind: 'single', suit, rank: 'K', pairLen, tenaceSeat: seat, target,
+                    label: `${SUIT_SYMBOL[suit]} : impasse au Roi`,
+                    policies: [
+                        { id: 'finesse', text: `impasse vers ${seat === 'N' ? 'M1' : 'M2'}` },
+                        { id: 'cash', text: 'tirer l’As' }
+                    ]
+                });
+            }
+
+            // Impasse simple à la Dame : AKJ dans la même main, Dame adverse.
+            if (handHasAllRanks(hand, suit, 'AKJ') && !pairHasRank(n, s, suit, 'Q')) {
+                specs.push({
+                    kind: 'single', suit, rank: 'Q', pairLen, tenaceSeat: seat, target,
+                    label: `${SUIT_SYMBOL[suit]} : impasse à la Dame`,
+                    policies: [
+                        { id: 'finesse', text: `impasse vers ${seat === 'N' ? 'M1' : 'M2'}` },
+                        { id: 'cash', text: 'tirer A-R' }
+                    ]
+                });
+            }
+
+            // Double impasse simplifiée : AJ10 face à petites, Roi et Dame adverses.
+            // On ne prétend pas résoudre toutes les questions d'entrées : le modèle mesure
+            // seulement l'intérêt de conserver une même orientation de double impasse.
+            if (handHasAllRanks(hand, suit, 'AJT') && !pairHasRank(n, s, suit, 'K') && !pairHasRank(n, s, suit, 'Q')) {
+                specs.push({
+                    kind: 'double', suit, ranks: ['K','Q'], pairLen, tenaceSeat: seat, target,
+                    label: `${SUIT_SYMBOL[suit]} : double impasse R-D`,
+                    policies: [
+                        { id: 'double-finesse', text: `double impasse vers ${seat === 'N' ? 'M1' : 'M2'}` },
+                        { id: 'cash-a', text: 'tirer l’As puis jouer vers V-10' }
+                    ]
+                });
+            }
+        }
+    }
+
+    // Dédupliquer les motifs équivalents produits par des tenues exceptionnellement redondantes.
+    const seen = new Set();
+    return specs.filter(spec => {
+        const key = `${spec.kind}|${spec.suit}|${spec.rank || (spec.ranks||[]).join('')}|${spec.tenaceSeat}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function sidePolicyLossOnDeal(spec, policyId, deal) {
+    if (!deal || !spec) return 0;
+    const target = spec.target;
+    const other = target === 'E' ? 'W' : 'E';
+
+    if (spec.kind === 'single') {
+        const targetHas = hiddenOpponentHasRank(deal, target, spec.suit, spec.rank);
+        const otherHas = hiddenOpponentHasRank(deal, other, spec.suit, spec.rank);
+        if (!targetHas && !otherHas) return 0;
+        const holder = targetHas ? target : other;
+        const holderLen = hiddenOpponentSuitLength(deal, holder, spec.suit);
+        if (policyId === 'finesse') {
+            // L'impasse gagne si l'honneur est sous la fourchette. S'il est sec de l'autre côté,
+            // une ligne normale peut encore le capturer sans coût supplémentaire.
+            return targetHas || (otherHas && holderLen === 1) ? 0 : 1;
+        }
+        if (policyId === 'cash') {
+            // Tirer les gros honneurs gagne seulement quand l'honneur recherché tombe assez vite.
+            const threshold = spec.rank === 'Q' ? 2 : 1;
+            return holderLen <= threshold ? 0 : 1;
+        }
+        return 0;
+    }
+
+    if (spec.kind === 'double') {
+        const targetCount = spec.ranks.filter(r => hiddenOpponentHasRank(deal, target, spec.suit, r)).length;
+        const otherCount = spec.ranks.length - targetCount;
+        if (policyId === 'double-finesse') {
+            // Une orientation fixe est excellente quand les deux honneurs sont sous la fourchette,
+            // correcte avec un seul, et coûte une levée supplémentaire quand les deux sont derrière.
+            return targetCount === 2 ? 0 : targetCount === 1 ? 0 : 1;
+        }
+        if (policyId === 'cash-a') {
+            // Ligne prudente : elle évite le pire cas mais abandonne souvent une levée lorsque
+            // les deux honneurs étaient favorablement placés pour la double impasse.
+            return targetCount === 2 ? 1 : 0;
+        }
+    }
+    return 0;
+}
+
+
+// --- V5 : communications, blocages et ordre de jeu -------------------------
+// Cette couche reste volontairement conservative : elle ne cherche pas à reconstruire
+// une partie complète coup par coup. Elle ajoute seulement des contraintes de plan qui
+// sont visibles dès les deux mains : besoin d'entrées pour répéter une impasse, couleur
+// potentiellement bloquée et arbitrage "atout d'abord / couleur secondaire d'abord".
+function oppositePartnerSeat(seat) { return seat === 'N' ? 'S' : 'N'; }
+
+function knownWinnerEntryCount(n, s, seat, excludeSuit = null) {
+    const hand = seat === 'N' ? n : s;
+    const other = seat === 'N' ? s : n;
+    let count = 0;
+    for (const suit of SUITS) {
+        if (suit === excludeSuit) continue;
+        const h = exactHolding(hand && hand[suit] || '');
+        const o = exactHolding(other && other[suit] || '');
+        if (!h.length) continue;
+        // As = entrée immédiate. Un Roi est aussi considéré comme entrée sûre si l'As
+        // est dans le partenariat ; idem pour D derrière AR. On plafonne à une entrée
+        // structurelle par couleur pour ne pas sur-vendre les communications.
+        if (h.includes('A')) { count++; continue; }
+        if (h.includes('K') && (h.includes('A') || o.includes('A'))) { count++; continue; }
+        if (h.includes('Q') && (h.includes('A') || o.includes('A')) && (h.includes('K') || o.includes('K'))) { count++; continue; }
+    }
+    return count;
+}
+
+function sidePolicyRequiredEntries(spec, policyId) {
+    if (!spec) return { seat: null, required: 0 };
+    // Pour faire une impasse vers la fourchette, il faut être dans l'autre main pour attaquer.
+    const leadSeat = oppositePartnerSeat(spec.tenaceSeat);
+    if (policyId === 'finesse') return { seat: leadSeat, required: 1 };
+    if (policyId === 'double-finesse') return { seat: leadSeat, required: 2 };
+    return { seat: null, required: 0 };
+}
+
+function sidePolicyCommunicationLoss(n, s, spec, policyId) {
+    const req = sidePolicyRequiredEntries(spec, policyId);
+    if (!req.required || !req.seat) return 0;
+    const available = knownWinnerEntryCount(n, s, req.seat, spec.suit);
+    if (available >= req.required) return 0;
+    // Une pénalité maximale d'une levée : on signale un plan fragilisé, sans prétendre
+    // que toute insuffisance d'entrée détruit mécaniquement plusieurs levées.
+    return 1;
+}
+
+function blockedSideSuitInfo(n, s, suit) {
+    const nHold = exactHolding(n && n[suit] || '');
+    const sHold = exactHolding(s && s[suit] || '');
+    if (nHold.length < 5 && sHold.length < 5) return null;
+    const longSeat = nHold.length >= sHold.length ? 'N' : 'S';
+    const shortSeat = oppositePartnerSeat(longSeat);
+    const longHold = longSeat === 'N' ? nHold : sHold;
+    const shortHold = shortSeat === 'N' ? nHold : sHold;
+    if (!shortHold.length || !longHold.length) return null;
+    const rankIndex = r => RANKS.indexOf(r);
+    const longTop = Math.min(...[...longHold].map(rankIndex));
+    const shortAllAboveLong = [...shortHold].every(r => rankIndex(r) < longTop);
+    if (!shortAllAboveLong) return null;
+    const outsideEntries = knownWinnerEntryCount(n, s, longSeat, suit);
+    if (outsideEntries > 0) return null;
+    return {
+        suit, longSeat, shortSeat, longLen: longHold.length, shortLen: shortHold.length,
+        label: `${SUIT_SYMBOL[suit]} potentiellement bloqué (${shortSeat === 'N' ? 'M1' : 'M2'} → ${longSeat === 'N' ? 'M1' : 'M2'} sans rentrée extérieure)`
+    };
+}
+
+function communicationDiagnostics(n, s, trump, sideChoices) {
+    const warnings = [];
+    for (const choice of (sideChoices || [])) {
+        const req = sidePolicyRequiredEntries(choice.spec, choice.policy.id);
+        if (req.required && req.seat) {
+            const available = knownWinnerEntryCount(n, s, req.seat, choice.spec.suit);
+            if (available < req.required) warnings.push(`${choice.spec.label} : ${req.required} rentrée${req.required>1?'s':''} utile${req.required>1?'s':''}, ${available} sûre${available>1?'s':''}`);
+        }
+    }
+    for (const suit of SUITS) {
+        if (suit === trump) continue;
+        const b = blockedSideSuitInfo(n, s, suit);
+        if (b) warnings.push(b.label);
+    }
+    return warnings;
+}
+
+function ruffingValueSignals(n, s, trump) {
+    if (!trump || trump === 'N') return [];
+    const out = [];
+    for (const suit of SUITS) {
+        if (suit === trump) continue;
+        const nLen = handSuitLength(n, suit), sLen = handSuitLength(s, suit);
+        const nTr = handSuitLength(n, trump), sTr = handSuitLength(s, trump);
+        if (nLen <= 1 && nTr >= 3 && sLen >= 4) out.push({ shortSeat:'N', suit });
+        if (sLen <= 1 && sTr >= 3 && nLen >= 4) out.push({ shortSeat:'S', suit });
+    }
+    return out;
+}
+
+function timingPlanCandidates(n, s, strain, sideChoices) {
+    if (strain === 'N') {
+        return (sideChoices || []).length ? [
+            { id:'communications-first', text:'préserver les rentrées avant d’affranchir' },
+            { id:'cash-source-first', text:'attaquer immédiatement la couleur source' }
+        ] : [];
+    }
+    const hasSideWork = (sideChoices || []).length > 0;
+    const ruffs = ruffingValueSignals(n, s, strain);
+    if (!hasSideWork && !ruffs.length) return [];
+    return [
+        { id:'trump-first', text:'purger les atouts d’abord' },
+        { id:'side-first', text:'traiter la couleur secondaire / les coupes d’abord' }
+    ];
+}
+
+function timingPlanLossOnDeal(planId, n, s, strain, sideChoices, deal) {
+    if (!planId) return 0;
+    if (strain === 'N') {
+        if (planId === 'cash-source-first') {
+            // Si une politique reconnue exige plusieurs rentrées, encaisser la source trop tôt
+            // est considéré comme risqué d'une levée. Le plan "communications-first" évite ce coût.
+            return (sideChoices || []).some(ch => sidePolicyCommunicationLoss(n,s,ch.spec,ch.policy.id) > 0 || sidePolicyRequiredEntries(ch.spec,ch.policy.id).required >= 2) ? 1 : 0;
+        }
+        return 0;
+    }
+    if (!deal) return 0;
+    if (planId === 'side-first') {
+        // Avant purge : une couleur secondaire peut être coupée par un défenseur chicane qui
+        // possède encore un atout. On ne compte qu'un seul risque de levée.
+        for (const ch of (sideChoices || [])) {
+            for (const opp of ['E','W']) {
+                if (hiddenOpponentSuitLength(deal, opp, ch.spec.suit) === 0 && hiddenOpponentSuitLength(deal, opp, strain) > 0) return 1;
+            }
+        }
+        return 0;
+    }
+    if (planId === 'trump-first') {
+        // Purger immédiatement peut consommer l'atout destiné à une coupe de la main courte.
+        return ruffingValueSignals(n, s, strain).length ? 1 : 0;
+    }
+    return 0;
+}
+
+function chooseTimingPlan(n, s, strain, level, tables, dd, trumpChoice, sideChoices) {
+    const plans = timingPlanCandidates(n, s, strain, sideChoices);
+    if (!plans.length) return null;
+    const available = (tables || []).filter(Boolean);
+    const pilotCount = Number(dd && dd.pilotCount || 0);
+    const pilot = pilotCount ? available.slice(0, pilotCount) : available;
+    const needed = Number(level) + 6;
+    const declarer = dd && dd.declarer ? dd.declarer : 'N';
+    let best = null;
+    for (const plan of plans) {
+        let wins=0, count=0, lossTotal=0;
+        for (const table of pilot) {
+            let tricks = Number(table && table[strain] && table[strain][declarer]);
+            const deal = hiddenDealFromTable(table);
+            if (!Number.isInteger(tricks) || !deal) continue;
+            if (trumpChoice && !trumpPolicySucceedsOnDeal(trumpChoice.policy.id, trumpChoice.spec.rank, strain, deal)) tricks -= 1;
+            for (const ch of (sideChoices || [])) {
+                tricks -= sidePolicyLossOnDeal(ch.spec, ch.policy.id, deal);
+                tricks -= sidePolicyCommunicationLoss(n,s,ch.spec,ch.policy.id);
+            }
+            const timingLoss = timingPlanLossOnDeal(plan.id,n,s,strain,sideChoices,deal);
+            tricks -= timingLoss;
+            count++; lossTotal += timingLoss;
+            if (tricks >= needed) wins++;
+        }
+        const row={...plan, wins, count, share:count?wins/count:0, meanLoss:count?lossTotal/count:0};
+        if (!best || row.share > best.share + 1e-12 || (Math.abs(row.share-best.share)<1e-12 && row.meanLoss < best.meanLoss-1e-12)) best=row;
+    }
+    return best;
+}
+
+function chooseSideSuitPolicies(n, s, trump, level, tables, dd) {
+    const specs = sideSuitPolicyCandidates(n, s, trump);
+    if (!specs.length) return [];
+    const available = (tables || []).filter(Boolean);
+    const pilotCount = Number(dd && dd.pilotCount || 0);
+    const pilot = pilotCount ? available.slice(0, pilotCount) : available;
+    const declarer = dd && dd.declarer ? dd.declarer : 'N';
+    const needed = Number(level) + 6;
+    if (!pilot.length || !pilot.some(t => hiddenDealFromTable(t))) return [];
+
+    const chosen = [];
+    for (const spec of specs) {
+        let best = null;
+        for (const policy of spec.policies) {
+            let wins = 0, count = 0, lossTotal = 0;
+            for (const table of pilot) {
+                const tricks = Number(table && table[trump || 'N'] && table[trump || 'N'][declarer]);
+                const deal = hiddenDealFromTable(table);
+                if (!Number.isInteger(tricks) || !deal) continue;
+                const loss = sidePolicyLossOnDeal(spec, policy.id, deal) + sidePolicyCommunicationLoss(n, s, spec, policy.id);
+                const effective = Math.max(0, tricks - loss);
+                count++; lossTotal += loss;
+                if (effective >= needed) wins++;
+            }
+            const share = count ? wins / count : 0;
+            const meanLoss = count ? lossTotal / count : 0;
+            const row = { ...policy, share, wins, count, meanLoss };
+            if (!best || row.share > best.share + 1e-12 || (Math.abs(row.share-best.share)<1e-12 && row.meanLoss < best.meanLoss-1e-12)) best = row;
+        }
+        if (best) chosen.push({ spec, policy: best });
+    }
+
+    // Au maximum deux décisions hors-atout : au-delà, le modèle simplifié deviendrait trop
+    // dépendant des entrées et de l'ordre de jeu. On privilégie les décisions les plus actives.
+    return chosen
+        .sort((a,b) => b.spec.pairLen - a.spec.pairLen || a.policy.meanLoss - b.policy.meanLoss)
+        .slice(0, 2);
+}
+
+function combinedPolicyEffectiveTricks(table, strain, declarer, trumpChoice, sideChoices, n, s, timingChoice) {
+    let tricks = Number(table && table[strain] && table[strain][declarer]);
+    if (!Number.isInteger(tricks)) return null;
+    const deal = hiddenDealFromTable(table);
+    if (!deal) return tricks;
+
+    if (trumpChoice) {
+        const ok = trumpPolicySucceedsOnDeal(trumpChoice.policy.id, trumpChoice.spec.rank, strain, deal);
+        if (!ok) tricks -= 1;
+    }
+    for (const choice of (sideChoices || [])) {
+        tricks -= sidePolicyLossOnDeal(choice.spec, choice.policy.id, deal);
+        tricks -= sidePolicyCommunicationLoss(n, s, choice.spec, choice.policy.id);
+    }
+    // Blocage structurel avéré : couleur longue inaccessible sans rentrée extérieure.
+    for (const suit of SUITS) {
+        if (suit === strain) continue;
+        if (blockedSideSuitInfo(n, s, suit)) { tricks -= 1; break; }
+    }
+    if (timingChoice) tricks -= timingPlanLossOnDeal(timingChoice.id, n, s, strain, sideChoices, deal);
+    return Math.max(0, tricks);
+}
+
+function closedCardEstimate(n, s, strain, level, tables) {
+    const dd = contractMakeStats(tables, strain, level);
+    const ddShare = Number(dd.share || 0);
+    const base = {
+        share: ddShare, ddShare, meanScore: Number(dd.meanScore || 0), reasons: [], gap: 0, label: 'Cartes fermées V5',
+        modeled: false, policy: null, evalCount: Number(dd.count || 0), coverage: 'none'
+    };
+    if (Number(level) < 6 || !n || !s) return { ...base, label: 'DD' };
+
+    const available = (tables || []).filter(Boolean);
+    const hasDealData = available.some(t => hiddenDealFromTable(t));
+    if (!hasDealData) return { ...base, reasons: ['données de distributions V5 indisponibles'], coverage: 'missing-deals' };
+
+    const trumpChoice = strain === 'N' ? null : chooseTrumpPolicy(n, s, strain, level, available, dd);
+    const sideChoices = chooseSideSuitPolicies(n, s, strain === 'N' ? null : strain, level, available, dd);
+    const clear = strain === 'N' ? null : trumpCanBeClearedWithoutGuess(n, s, strain);
+    const timingChoice = chooseTimingPlan(n, s, strain, level, available, dd, trumpChoice, sideChoices);
+    const commWarnings = communicationDiagnostics(n, s, strain === 'N' ? null : strain, sideChoices);
+
+    // À SA, V5 ajoute une contrainte de communications et un plan de timing simplifié aux impasses reconnues.
+    if (strain === 'N' && !sideChoices.length) {
+        return {
+            ...base,
+            reasons: ['V5 : aucune politique simple exploitable reconnue ; jeu SA complexe non modélisé'],
+            coverage: 'notrump-complex'
+        };
+    }
+
+    if (strain !== 'N' && !trumpChoice && !(clear && clear.ok) && !sideChoices.length) {
+        return {
+            ...base,
+            reasons: ['configuration complexe hors du modèle V5'],
+            coverage: 'complex'
+        };
+    }
+
+    const evalTables = dd.pilotCount ? available.slice(dd.pilotCount) : available;
+    const needed = Number(level) + 6;
+    let wins = 0, count = 0;
+    const scoreSeries = [];
+    for (const table of evalTables) {
+        const effectiveTricks = combinedPolicyEffectiveTricks(table, strain, dd.declarer, trumpChoice, sideChoices, n, s, timingChoice);
+        if (effectiveTricks === null) continue;
+        count++;
+        if (effectiveTricks >= needed) wins++;
+        scoreSeries.push(duplicateScore(level, strain, effectiveTricks, nsIsVulnerable(), 0));
+    }
+    if (!count) return { ...base };
+
+    const shareRaw = wins / count;
+    const share = Math.min(ddShare, shareRaw);
+    const meanScore = scoreSeries.length ? scoreSeries.reduce((a,b)=>a+b,0) / scoreSeries.length : Number(dd.meanScore || 0);
+    const gap = Math.max(0, ddShare - share);
+    const reasons = [];
+    if (trumpChoice) reasons.push(`${trumpChoice.spec.label} : politique unique « ${trumpChoice.policy.text} »`);
+    else if (strain !== 'N' && clear && clear.ok) reasons.push(`Atout sans décision cachée : ${clear.text}`);
+    for (const choice of sideChoices) reasons.push(`${choice.spec.label} : politique unique « ${choice.policy.text} »`);
+    if (timingChoice) reasons.push(`Timing : plan unique « ${timingChoice.text} »`);
+    for (const warning of commWarnings) reasons.push(`Communication : ${warning}`);
+    if (strain === 'N') reasons.push('SA V5 partiel : les communications simples sont contraintes ; les squeezes, mises en main et timings profonds restent DD');
+
+    const coverageCore = trumpChoice && sideChoices.length ? 'trump+side' :
+        trumpChoice ? 'simple-trump' :
+        sideChoices.length ? (strain === 'N' ? 'side-notrump' : 'side-suit') :
+        'trump-forced-clear';
+    const coverage = timingChoice ? `${coverageCore}+timing` : coverageCore;
+
+    return {
+        share, ddShare, meanScore, reasons, gap,
+        label: 'Cartes fermées V5', modeled: true,
+        policy: trumpChoice ? trumpChoice.policy : (sideChoices[0] ? sideChoices[0].policy : { id:'forced-clear', text:'tirer les honneurs maîtres' }),
+        policySpec: trumpChoice ? trumpChoice.spec : (sideChoices[0] ? sideChoices[0].spec : null),
+        sidePolicies: sideChoices,
+        timingPolicy: timingChoice,
+        communicationWarnings: commWarnings,
+        evalCount: count,
+        pilotCount: Number(dd.pilotCount || 0),
+        coverage
+    };
+}
+
+function closedCardCompactText(n, s, strain, level, tables) {
+    const est = closedCardEstimate(n, s, strain, level, tables);
+    const ddPct = Math.round(est.ddShare * 100);
+    if (!est.modeled) return `${ddPct}% DD · fermé V5 non modélisé`;
+    const closedPct = Math.round(est.share * 100);
+    const gap = Math.round(est.gap * 100);
+    const gapText = gap >= 15 ? 'écart important' : gap >= 7 ? 'écart modéré' : 'écart faible';
+    return `${ddPct}% DD · ≈${closedPct}% fermé V5 · ${gapText}`;
+}
+
+function slamStructureCompactHtml(n, s, strain, level = 6) {
+    const info = slamStructureInfo(n, s, strain, level);
+    if (!info) return '';
+    const pieces = [];
+    pieces.push(`${info.keycards}/${info.keyTotal} clés`);
+    if (strain !== 'N') pieces.push(info.trumpQ ? 'D atout présente' : 'D atout absente');
+    if (info.missingControls.length) pieces.push(`contrôle ${info.missingControls.map(x => SUIT_SYMBOL[x]).join(' ')} manquant`);
+    else if (info.controls.some(x => x.type === 'ruff')) pieces.push('contrôle par coupe');
+    const warn = /solide$/i.test(info.rating) ? '' : ' class="warn"';
+    const closed = lastContractTables.length ? closedCardCompactText(n, s, strain, level, lastContractTables) : '';
+    return `<div class="contract-option-slaminfo"><span${warn}>${escapeHtml(info.rating)}</span> · ${escapeHtml(pieces.join(' · '))}${closed ? `<br><span>${escapeHtml(closed)}</span>` : ''}</div>`;
+}
+
+function slamStructureDetailHtml(n, s, strain, tables, level = 6) {
+    const info = slamStructureInfo(n, s, strain, level);
+    if (!info) return '';
+    const levels = [5,6,7].map(testLevel => {
+        const st = contractMakeStats(tables, strain, testLevel);
+        return `<div class="slam-level-pill"><span>${contractNameText(testLevel, strain)} DD</span><strong>${(st.share*100).toFixed(0)}%</strong></div>`;
+    }).join('');
+    const missingAceText = info.missingAces.length
+        ? `As manquant${info.missingAces.length > 1 ? 's' : ''} : ${info.missingAces.map(x => SUIT_SYMBOL[x]).join(' ')}`
+        : 'As : tous présents';
+    const kingText = strain === 'N'
+        ? `${info.sideKings.present.length}/${info.sideKings.total} Rois présents`
+        : `${info.sideKings.present.length}/${info.sideKings.total} Rois annexes`;
+    const valueText = info.valueSignals.length
+        ? `<div><strong>Valeurs potentiellement dévalorisées :</strong> ${escapeHtml(info.valueSignals.join(' · '))}</div>`
+        : '';
+    const levelNote = Number(level) >= 7
+        ? `<div><strong>Exigence grand chelem :</strong> tous les contrôles de 1er tour sont attendus ; à l’atout, ARD est considéré comme la structure de référence.</div>`
+        : '';
+    const closed = closedCardEstimate(n, s, strain, level, tables);
+    const closedPct = Math.round(closed.share * 100);
+    const ddPct = Math.round(closed.ddShare * 100);
+    const gapPct = Math.round(closed.gap * 100);
+    const gapLabel = closed.modeled
+        ? (gapPct >= 15 ? 'Écart important avec le DD' : gapPct >= 7 ? 'Écart modéré avec le DD' : 'Écart faible avec le DD')
+        : 'Cas non couvert par le modèle fermé V5';
+    const reasonText = closed.reasons.length ? closed.reasons.join(' · ') : 'aucune décision d’atout cachée simple détectée';
+    return `<div class="slam-structure">
+      <div class="slam-structure-head"><strong>Lecture structurelle du chelem</strong><span class="slam-structure-rating">${escapeHtml(info.rating)}</span></div>
+      <div class="closed-card-box">
+        <div class="closed-card-head"><span>Jeu à cartes fermées · politique V2</span><strong>${closed.modeled ? `≈ ${closedPct}%` : '—'}</strong></div>
+        <div class="closed-card-gap">${closed.modeled ? `${ddPct}% DD → ≈${closedPct}% fermé V5` : `${ddPct}% DD · fermé V5 non calculé`} · ${escapeHtml(gapLabel)}</div>
+        <div class="closed-card-reasons">${escapeHtml(reasonText)}</div>
+        <div class="closed-card-note">V5 : les politiques d’atout/couleurs, les besoins simples de rentrées et un ordre de jeu (atout d’abord / secondaire d’abord) sont choisis sur le pilote puis figés. Les squeezes, mises en main et séquences profondes restent double-dummy.</div>
+      </div>
+      <div class="slam-structure-lines">
+        <div><strong>Cartes-clés :</strong> ${info.keycards}/${info.keyTotal} · ${escapeHtml(missingAceText)}</div>
+        ${strain !== 'N' ? `<div><strong>${escapeHtml(info.trumpText)}</strong></div>` : ''}
+        <div><strong>Rois :</strong> ${escapeHtml(kingText)}</div>
+        <div><strong>Contrôles :</strong> ${escapeHtml(info.controlsText)}</div>
+        ${valueText}
+        ${levelNote}
+        <div>Le % DD mesure ce qui est réalisable à cartes ouvertes ; le fermé V5 impose une politique commune et, lorsque pertinent, un plan de timing/communications identique sur toutes les distributions d’évaluation.</div>
+      </div>
+      <div class="slam-levels">${levels}</div>
+    </div>`;
+}
+
 function renderContractDetail(level, strain, options = {}) {
     if (!lastContractTables.length) return;
+    const advanced = document.getElementById('advancedAnalysis');
+    if (advanced) advanced.open = true;
     const holder = document.getElementById('contractDetail');
     if (!holder) return;
-    const stats = contractMakeStats(lastContractTables, strain, level);
+    const doubled = Number(options.doubled || 0);
+    const stats = contractMakeStats(lastContractTables, strain, level, doubled);
     const ci = wilsonInterval(stats.wins, stats.count);
     const dist = trickDistributionForContract(lastContractTables, strain, level, stats);
     const pct = stats.share * 100;
@@ -2111,20 +3613,23 @@ function renderContractDetail(level, strain, options = {}) {
             .find(c => Number(c.level) === Number(level) && c.strain === strain)
         : null;
     const why = candidate && lastProbabilityHands ? recommendationWhy(candidate, lastProbabilityHands.n, lastProbabilityHands.s, lastContractTables) : '';
-    selectedContract = { level: Number(level), strain: String(strain) };
+    selectedContract = { level: Number(level), strain: String(strain), doubled };
     document.querySelectorAll('[data-contract-level][data-contract-strain]').forEach(el => {
         el.classList.toggle('is-selected', Number(el.dataset.contractLevel) === Number(level) && el.dataset.contractStrain === strain);
     });
     const cells = dist.buckets.map(bucket => `<div class="trick-detail-cell"><strong>${escapeHtml(bucket.label)} levées</strong><span>${(bucket.count / Math.max(1, dist.count) * 100).toFixed(0)}%</span></div>`).join('');
     holder.innerHTML = `<div class="contract-detail-head">
-      <div class="contract-detail-title">${contractNameHtml(level, strain)} · détail</div>
-      <div class="contract-detail-prob">${pct.toFixed(0)}%</div>
+      <div class="contract-detail-title">${contractNameHtml(level, strain)}${doubled===1 ? ' X' : doubled===2 ? ' XX' : ''} · détail</div>
+      <div class="contract-detail-prob">${pct.toFixed(0)}% DD</div>
     </div>
     ${why ? `<div class="contract-detail-why"><strong>Pourquoi proposé ?</strong> ${escapeHtml(why)}</div>` : ''}
+    ${Number(level) >= 6 && lastProbabilityHands ? slamStructureDetailHtml(lastProbabilityHands.n, lastProbabilityHands.s, strain, lastContractTables, level) : ''}
     <div class="contract-detail-meta">
       <div><span>Déclarant</span><strong>${declarerLabel}</strong></div>
       <div><span>IC 95 %</span><strong>${(ci.low*100).toFixed(0)}–${(ci.high*100).toFixed(0)} %</strong></div>
       <div><span>Moyenne</span><strong>${dist.mean.toFixed(2)} levées</strong></div>
+      <div><span>EV score</span><strong>${formatExpectedScore(stats.meanScore)}</strong></div>
+      <div><span>Contexte</span><strong>${stats.vulnerable ? 'V' : 'NV'} · ${doubled===1 ? 'contré' : doubled===2 ? 'surcontré' : 'non contré'}</strong></div>
       <div><span>Main 1</span><strong>${(stats.rawN*100).toFixed(0)}%</strong></div>
       <div><span>Main 2</span><strong>${(stats.rawS*100).toFixed(0)}%</strong></div>
       <div><span>Échantillon</span><strong>${stats.count} donnes</strong></div>
@@ -2147,7 +3652,7 @@ function testManualContract() {
     const parsed = parseManualContract(input.value);
     result.classList.remove('error');
     if (!parsed) {
-        result.textContent = 'Format attendu : 1 à 7 suivi de SA, P, C, K ou T (ex. 6T, 4C, 3SA).';
+        result.textContent = 'Format attendu : 1 à 7 suivi de SA, P, C, K ou T (ex. 4C, 3SA, 5K).';
         result.classList.add('error');
         return;
     }
@@ -2156,10 +3661,10 @@ function testManualContract() {
         result.classList.add('error');
         return;
     }
-    const stats = contractMakeStats(lastContractTables, parsed.strain, parsed.level);
+    const stats = contractMakeStats(lastContractTables, parsed.strain, parsed.level, 0);
     const pct = stats.share * 100;
-    result.innerHTML = `${contractNameHtml(parsed.level, parsed.strain)} : <strong title="${escapeHtml(statsTooltip(stats))}">${pct.toFixed(0)}%</strong> de réussite <span style="font-weight:650;color:var(--muted)">(${stats.count} distributions d’évaluation)</span>`;
-    renderContractDetail(parsed.level, parsed.strain, { source: 'manual' });
+    const declarer = stats.declarer === 'N' ? 'Main 1' : 'Main 2';
+    result.innerHTML = `${contractNameHtml(parsed.level, parsed.strain)} : <strong>${pct.toFixed(0)} %</strong> de réussite théorique <span style="font-weight:650;color:var(--muted)">(${declarer} · ${stats.count} distributions)</span>`;
 }
 
 function updateManualContractLive() {
@@ -2186,9 +3691,10 @@ function primaryLadderRow(n, s, tables) {
             return ['S','H','D','C'].indexOf(a.strain) - ['S','H','D','C'].indexOf(b.strain);
         })[0];
     }
-    return scan.sort((a,b) => {
-        const aGame = a.levels[a.gameLevel] ? a.levels[a.gameLevel].share : 0;
-        const bGame = b.levels[b.gameLevel] ? b.levels[b.gameLevel].share : 0;
+    const natural = scan.filter(row => row.plausible);
+    return (natural.length ? natural : scan).sort((a,b) => {
+        const aGame = a.levels[a.gameLevel] ? a.levels[a.gameLevel].meanScore : -Infinity;
+        const bGame = b.levels[b.gameLevel] ? b.levels[b.gameLevel].meanScore : -Infinity;
         if (Math.abs(aGame - bGame) > 1e-9) return bGame - aGame;
         if (a.frontier !== b.frontier) return b.frontier - a.frontier;
         return b.fit - a.fit;
@@ -2204,7 +3710,7 @@ function renderContractLadder(n, s, tables) {
         holder.innerHTML = '';
         return;
     }
-    const levels = row.strain === 'N' ? [1,2,3,4,5,6,7] : [2,3,4,5,6,7];
+    const levels = [1,2,3,4,5,6,7];
     const denom = row.strain === 'N' ? 'SA' : (SUIT_SYMBOL[row.strain] || row.strain);
     const fitText = row.trueFit ? ` · fit ${row.fit}e` : '';
     const cells = levels.map(level => {
@@ -2280,50 +3786,33 @@ function usefulContractComparisons(n, s, tables) {
         if (!byStrain[aStrain] || !byStrain[bStrain]) return;
         const key = [`${aLevel}${aStrain}`, `${bLevel}${bStrain}`].sort().join('|');
         if (seen.has(key)) return;
-        const aStats = byStrain[aStrain].levels[aLevel] || contractMakeStats(available, aStrain, aLevel);
-        const bStats = byStrain[bStrain].levels[bLevel] || contractMakeStats(available, bStrain, bLevel);
+        const aStats = byStrain[aStrain].levels[aLevel];
+        const bStats = byStrain[bStrain].levels[bLevel];
+        if (!aStats || !bStats) return;
         const isSlamComparison = Number(aLevel) >= 6 || Number(bLevel) >= 6;
-        const viabilityFloor = isSlamComparison ? 0.08 : 0.15;
-        // « Comparaison utile » suppose deux options réellement envisageables. Un 4♠ à 99 %
-        // face à 3SA à 0 % (ou 5♦ à 0 %) n'apporte rien et surcharge l'interface.
-        if (Math.min(aStats.share, bStats.share) < viabilityFloor) return;
+        if (Math.min(aStats.share, bStats.share) < (isSlamComparison ? 0.06 : 0.12)) return;
         seen.add(key);
-        pairs.push({
-            a: { level: aLevel, strain: aStrain, stats: aStats },
-            b: { level: bLevel, strain: bStrain, stats: bStats },
-            label
-        });
+        pairs.push({ a:{level:aLevel,strain:aStrain,stats:aStats}, b:{level:bLevel,strain:bStrain,stats:bStats}, label });
     };
 
-    const fits = scan.filter(row => row.trueFit).sort((a,b) => b.fit - a.fit || b.levels[b.gameLevel].share - a.levels[a.gameLevel].share);
+    const fits = scan.filter(row => row.trueFit).sort((a,b) => b.fit-a.fit || b.levels[b.gameLevel].meanScore-a.levels[a.gameLevel].meanScore);
     const primary = fits[0] || primaryLadderRow(n, s, available);
     const nt = byStrain.N;
-
-    // Question bridge classique : jouer la manche dans le fit ou 3SA ?
-    if (primary && primary.strain !== 'N' && nt) {
+    if (primary && primary.strain !== 'N' && nt && (nt.plausible || nt.levels[3].share >= .20)) {
         addPair(primary.gameLevel, primary.strain, 3, 'N', 'Manche dans le fit ou 3SA');
-        if (Math.max(primary.levels[6].share, nt.levels[6].share) >= 0.10) {
-            addPair(6, primary.strain, 6, 'N', 'Chelem dans le fit ou 6SA');
-        }
+        if (Math.max(primary.levels[6].share, nt.levels[6].share) >= 0.08) addPair(6, primary.strain, 6, 'N', 'Chelem dans le fit ou 6SA');
     }
-
-    // Deux vrais fits : comparer leurs contrats naturels, plutôt que de laisser le choix implicite.
     if (fits.length >= 2) {
-        const a = fits[0], b = fits[1];
-        addPair(a.gameLevel, a.strain, b.gameLevel, b.strain, 'Choix de manche entre les fits');
-        if (Math.max(a.levels[6].share, b.levels[6].share) >= 0.10) {
-            addPair(6, a.strain, 6, b.strain, 'Choix de chelem entre les fits');
-        }
+        const a=fits[0], b=fits[1];
+        addPair(a.gameLevel,a.strain,b.gameLevel,b.strain,'Choix de manche entre les fits');
+        if (Math.max(a.levels[6].share,b.levels[6].share)>=.08) addPair(6,a.strain,6,b.strain,'Choix de chelem entre les fits');
     }
 
-    // Sans vrai fit, comparer les deux manches qui ressortent le mieux si elles sont crédibles.
-    if (!fits.length) {
-        const games = scan.map(row => ({ row, stats: row.levels[row.gameLevel] }))
-            .filter(x => x.stats.share >= 0.25)
-            .sort((a,b) => b.stats.share - a.stats.share);
-        if (games.length >= 2) addPair(games[0].row.gameLevel, games[0].row.strain, games[1].row.gameLevel, games[1].row.strain, 'Choix de manche');
-    }
-    return pairs.slice(0, 2);
+    // Comparaison de décision : les deux meilleures EV naturelles doivent pouvoir être
+    // comparées même si elles ne tombent pas dans les cas classiques fit/3SA.
+    const pool = decisionPoolForRefinement(n,s,available);
+    if (pool.length >= 2) addPair(pool[0].level,pool[0].row.strain,pool[1].level,pool[1].row.strain,'Meilleures options par espérance de score');
+    return pairs.slice(0,3);
 }
 
 function renderContractComparisons(n, s, tables) {
@@ -2335,7 +3824,13 @@ function renderContractComparisons(n, s, tables) {
         const aPct = pair.a.stats.share * 100;
         const bPct = pair.b.stats.share * 100;
         const gap = Math.abs(aPct - bPct);
-        const note = gap < 3 ? 'Très proches statistiquement' : `Écart d’environ ${gap.toFixed(0)} points`;
+        const scoreGap = pair.a.stats.meanScore - pair.b.stats.meanScore;
+        const scoreCi = pairedScoreDifferenceInterval(pair.a.stats, pair.b.stats);
+        const pctNote = gap < 3 ? 'réussite très proche' : `écart réussite ≈ ${gap.toFixed(0)} pts`;
+        const leader = scoreGap >= 0 ? contractNameText(pair.a.level, pair.a.strain) : contractNameText(pair.b.level, pair.b.strain);
+        const resolved = !(scoreCi.low <= 0 && scoreCi.high >= 0);
+        const scoreNote = `EV ${formatExpectedScore(pair.a.stats.meanScore)} vs ${formatExpectedScore(pair.b.stats.meanScore)} · ${leader} +${Math.abs(Math.round(scoreGap))} ${resolved ? '(écart stabilisé)' : '(écart encore incertain)'}`;
+        const note = `${pctNote} · ${scoreNote}`;
         return `<div class="contract-comparison">
           <div class="contract-comparison-side"><button type="button" data-contract-level="${pair.a.level}" data-contract-strain="${pair.a.strain}">${contractNameHtml(pair.a.level, pair.a.strain)}</button><span class="contract-comparison-pct">${aPct.toFixed(0)}%</span></div>
           <span class="contract-comparison-vs">VS</span>
@@ -2350,18 +3845,13 @@ function renderContractComparisons(n, s, tables) {
 function isBorderlineDecision(n, s, tables, candidates = null, comparisons = null) {
     const available = (tables || []).filter(Boolean);
     if (!available.length || available.length >= MAX_MANUAL_SAMPLE_COUNT) return false;
+    if (decisionNeedsMoreSamples(n, s, available)) return true;
     const totalKr = computeKaplanRubens(n) + computeKaplanRubens(s);
     const rows = candidates || intelligentContractCandidates(n, s, totalKr, available);
     if (rows.some(candidate => {
         const stats = candidate.stats || contractMakeStats(available, candidate.strain, candidate.level);
-        return stats.share >= 0.35 && stats.share <= 0.65;
+        return stats.share >= 0.35 && stats.share <= 0.65 && wilsonInterval(stats.wins, stats.count).half > 0.04;
     })) return true;
-    const pairs = comparisons || usefulContractComparisons(n, s, available);
-    if (pairs.some(pair => Math.abs(pair.a.stats.share - pair.b.stats.share) <= 0.08 && Math.max(pair.a.stats.share, pair.b.stats.share) >= 0.25)) return true;
-    if (selectedContract) {
-        const stats = contractMakeStats(available, selectedContract.strain, selectedContract.level);
-        if (stats.share >= 0.35 && stats.share <= 0.65) return true;
-    }
     return false;
 }
 
@@ -2376,7 +3866,7 @@ function updateRefineControl(n, s, tables, candidates = null, comparisons = null
     row.hidden = !show;
     if (!show) return;
     btn.textContent = count >= MANUAL_REFINE_STAGES[0] ? 'Affiner encore' : 'Affiner';
-    hint.textContent = `Décision serrée · passer de ${count} à ${next} distributions.`;
+    hint.textContent = `Décision EV encore incertaine · passer de ${count} à ${next} distributions.`;
 }
 
 function contractSuggestionColumnMap(n, s, candidates) {
@@ -2404,62 +3894,368 @@ function contractSuggestionColumnMap(n, s, candidates) {
     return map;
 }
 
+function essentialStatus(share) {
+    const pct = Number(share || 0);
+    if (pct >= 0.70) return { cls: 'solid', label: 'solide' };
+    if (pct >= 0.50) return { cls: 'borderline', label: 'limite' };
+    return { cls: 'weak', label: 'faible' };
+}
+
+// Lecture volontairement simple des arrêts : l'absence d'arrêt évident est
+// une ALERTE, pas une démonstration qu'un contrat de 3SA est irréalisable.
+// Un As, un Roi au moins second ou une fourchette D-V au moins troisième
+// dans une même main constituent ici un arrêt apparent.
+function apparentNtStopper(n, s, suit) {
+    const hands = [n, s];
+    return hands.some(hand => {
+        const h = exactHolding(hand && hand[suit] || '');
+        const len = handSuitLength(hand, suit);
+        return h.includes('A') || (h.includes('K') && len >= 2) ||
+            (h.includes('Q') && h.includes('J') && len >= 3);
+    });
+}
+
+function missingApparentNtStoppers(n, s) {
+    return SUITS.filter(suit => !apparentNtStopper(n, s, suit));
+}
+
+// Les distributions régulières classiques : 4-3-3-3, 4-4-3-2 et 5-3-3-2.
+function isRegularHandForNT(hand) {
+    const shape = SUITS.map(suit => handSuitLength(hand, suit))
+        .sort((a, b) => b - a).join('-');
+    return ['4-3-3-3', '4-4-3-2', '5-3-3-2'].includes(shape);
+}
+
+// Contrat de référence : HCP pour le seuil, complémentarité DES DEUX mains
+// pour les contrats à la couleur ; la formule individuelle K&R est inchangée.
+// Ces zones sont des repères de contrat, et non des probabilités calculées.
+function pairContractStructure(n, s, strain) {
+    const hcp = highCardPoints(n) + highCardPoints(s);
+    const kr = computeKaplanRubens(n) + computeKaplanRubens(s);
+    if (strain === 'N') return { hcp, kr, fit: 0, fitBonus: 0, ruffBonus: 0, waste: 0, effective: hcp, notes: [] };
+
+    const lenN = handSuitLength(n, strain);
+    const lenS = handSuitLength(s, strain);
+    const fit = lenN + lenS;
+    const fitBonus = fit >= 10 ? 2 : fit >= 9 ? 1 : 0;
+    const shortTrumpHand = lenN <= lenS ? n : s;
+    const longTrumpHand = lenN <= lenS ? s : n;
+    const shortLabel = lenN <= lenS ? 'M1' : 'M2';
+    const ruffs = [];
+    const wastes = [];
+    // Seules les courtes de la main COURTE à l'atout créent ici un bonus
+    // d'exploitation : une courte dans la main longue ne suffit pas à affirmer
+    // l'existence d'une levée supplémentaire.
+    for (const suit of SUITS) {
+        if (suit === strain) continue;
+        const shortLen = handSuitLength(shortTrumpHand, suit);
+        const longLen = handSuitLength(longTrumpHand, suit);
+        if (Math.min(lenN, lenS) >= 2 && shortLen <= 1 && longLen >= 2) {
+            ruffs.push({ suit, type: shortLen === 0 ? 'chicane' : 'singleton', points: shortLen === 0 ? 2 : 1, seat: shortLabel });
+        }
+        // Honneurs éventuellement mal placés en face d'une courte : signal,
+        // sans modifier les K&R individuels ni déduire arbitrairement des levées.
+        for (const [a,b] of [[n,s],[s,n]]) {
+            const shortSideLen = handSuitLength(a, suit);
+            const opposite = exactHolding(b && b[suit] || '');
+            if (shortSideLen <= 1 && (opposite.includes('K') || opposite.includes('Q')) &&
+                !opposite.includes('A')) {
+                wastes.push(suit);
+            }
+        }
+    }
+    const ruffBonus = Math.min(2, ruffs.reduce((sum, r) => sum + r.points, 0));
+    // Le bonus n'est PAS ajouté aux K&R (qui valorisent déjà les courtes) :
+    // il sert uniquement de repère de complémentarité à côté du total HCP.
+    const effective = hcp + fitBonus + ruffBonus;
+    const aces = SUITS.filter(suit => handHasRank(n,suit,'A') || handHasRank(s,suit,'A')).length;
+    const trumpK = handHasRank(n,strain,'K') || handHasRank(s,strain,'K');
+    const trumpQ = handHasRank(n,strain,'Q') || handHasRank(s,strain,'Q');
+    const keycards = aces + Number(trumpK);
+    const missingControls = SUITS.filter(suit => !hasFirstRoundControl(n,s,suit,strain));
+    const notes = [];
+    if (fit >= 9) notes.push(`fit ${fit}e`);
+    if (ruffs.length) notes.push(ruffs.map(r => `${r.type} ${suitSymbolHtml(r.suit)} ${r.seat}`).join(' · '));
+    if (wastes.length) notes.push(`honneurs face à courte : ${[...new Set(wastes)].map(suitSymbolHtml).join(' ')}`);
+    return { hcp, kr, fit, fitBonus, ruffBonus, effective, ruffs, wastes,
+        aces, keycards, trumpK, trumpQ, missingControls, notes };
+}
+
+function referenceContract(n, s, row) {
+    const structure = pairContractStructure(n,s,row.strain);
+    const hcp = structure.hcp;
+    const strain = row.strain;
+    if (strain === 'N') {
+        // Zones usuelles à SA : la forte distribution individuelle K&R ne doit
+        // pas, à elle seule, déclencher un chelem à SA.
+        const level = hcp >= 37 && SUITS.every(suit => handHasRank(n,suit,'A') || handHasRank(s,suit,'A'))
+            ? 7 : hcp >= 33 ? 6 : hcp >= 25 ? 3 : hcp >= 20 ? 2 : 1;
+        return { level, strain, structure, exploratory: level === 7,
+            explanation: level >= 6 ? `${hcp} H · zone ${level}SA` : `${hcp} H · zone SA` };
+    }
+    const semi = row.fit === 7;
+    const effective = structure.effective;
+    const major = strain === 'S' || strain === 'H';
+    const game = major ? 4 : 5;
+    const enoughSlamKeys = structure.keycards >= 4 && structure.missingControls.length <= 1;
+    const safeGrand = structure.aces === 4 && structure.keycards === 5 &&
+        structure.missingControls.length === 0 && (structure.trumpQ || structure.fit >= 10);
+    // Le semi-fit 7e est présenté comme alternative à vérifier, jamais comme
+    // un chelem naturel. Les seuils tiennent compte de la complémentarité, sans
+    // remplacer les pourcentages DDS.
+    let level;
+    if (!semi && safeGrand && effective >= 37) level = 7;
+    else if (!semi && enoughSlamKeys && effective >= (major ? 32 : 34)) level = 6;
+    else if (effective >= (major ? 25 : 28)) level = game;
+    else level = major ? Math.min(3, Math.max(2, structure.fit - 6))
+                       : Math.min(4, Math.max(2, structure.fit - 6));
+    const components = [`${hcp} H`];
+    if (structure.fitBonus) components.push(`fit ${structure.fit}e`);
+    if (structure.ruffBonus) components.push(`courte exploitable`);
+    if (level >= 6) components.push(`${structure.keycards}/5 clés`);
+    return { level, strain, structure, exploratory: level === 7 || semi,
+        explanation: components.join(' · ') };
+}
+
+// La référence structurelle est un repère d'enchères, pas une limite en levées.
+// Quand les mêmes simulations montrent un contrat bien plus haut avec une fréquence
+// DD substantielle, on le présente d'abord comme potentiel constaté (jamais comme
+// une recommandation de chelem en jeu à cartes fermées).
+function notableDdPotential(row, referenceLevel) {
+    if (!row || !row.levels) return null;
+    const ref = Number(referenceLevel || 0);
+    if (!ref) return null;
+    const options = [];
+    // La manche est intéressante seulement quand elle dépasse nettement la
+    // référence ; un petit chelem DD >= 70 % mérite toujours d'être signalé.
+    const game = Number(row.gameLevel || (row.strain === 'N' ? 3 : row.strain === 'H' || row.strain === 'S' ? 4 : 5));
+    if (game >= ref + 2 && game <= 5) {
+        const share = Number(row.levels[game]?.share || 0);
+        if (share >= 0.75) options.push({ level: game, share });
+    }
+    if (6 >= ref + 2) {
+        const share = Number(row.levels[6]?.share || 0);
+        if (share >= 0.70) options.push({ level: 6, share });
+    }
+    // Le grand chelem ne doit pas voler la vedette à 6x sur une seule
+    // simulation sur deux ; signal à partir d'une fréquence DD très élevée.
+    if (7 >= ref + 2) {
+        const share = Number(row.levels[7]?.share || 0);
+        if (share >= 0.90) options.push({ level: 7, share });
+    }
+    return options.sort((a, b) => b.level - a.level)[0] || null;
+}
+
+function logicalDisplayRows(n, s, scan) {
+    const fits = fitInfos(n, s).filter(info => info.length >= 8);
+    const majors = fits.filter(info => info.major).sort((a,b)=>b.length-a.length);
+    // Conserver TOUS les vrais fits (>= 8), y compris une mineure derrière
+    // une majeure : un double fit doit offrir les deux échelles DD complètes.
+    let rows = scan.filter(row => row.trueFit || row.strain === 'N');
+
+    const noStopper = missingApparentNtStoppers(n, s);
+    // Quand 3SA souffre d'un arrêt manquant ET qu'il n'y a pas de fit majeur 8e,
+    // examiner toute majeure 7e (4-3, 5-2 ou 6-1), sans l'assimiler à un vrai fit.
+    // Sa probabilité DD à 4M reste visible, même si elle est faible.
+    if (!majors.length && noStopper.length) {
+        for (const suit of ['S','H']) {
+            const a = handSuitLength(n, suit), b = handSuitLength(s, suit);
+            if (a+b !== 7 || Math.min(a,b) < 1) continue;
+            const semi = scan.find(row => row.strain === suit);
+            if (semi && !rows.some(row => row.strain === suit)) {
+                const shape = `${Math.max(a,b)}-${Math.min(a,b)}`;
+                rows.push({ ...semi, semiFit43: true, semiFitShape: shape, noStopper });
+            }
+        }
+    }
+    if (!rows.length) rows = scan.filter(row => row.fit >= 7).slice(0,1);
+    // Fits majeurs d'abord, puis fits mineurs, puis les semi-fits éventuels.
+    // La priorité à SA sur une mineure 8e régulière est gérée plus bas.
+    rows.sort((a,b) => {
+        if (a.strain === 'N' || b.strain === 'N') return a.strain === 'N' ? 1 : -1;
+        const aTrue = Number(Boolean(a.trueFit)), bTrue = Number(Boolean(b.trueFit));
+        if (aTrue !== bTrue) return bTrue - aTrue;
+        const aMajor = Number(a.strain === 'S' || a.strain === 'H');
+        const bMajor = Number(b.strain === 'S' || b.strain === 'H');
+        if (aMajor !== bMajor) return bMajor - aMajor;
+        return b.fit - a.fit;
+    });
+    // Deux mains régulières + fit seulement 8e en mineure + arrêts apparents :
+    // 3SA passe avant 5m, dont la manche demande deux levées supplémentaires.
+    // Un fit majeur 8e, une mineure 9e+ ou un arrêt manquant annulent cette priorité.
+    const minorFits = fits.filter(info => !info.major);
+    const saPriority = !majors.length && minorFits.length > 0 &&
+        minorFits.every(info => info.length === 8) &&
+        isRegularHandForNT(n) && isRegularHandForNT(s) &&
+        noStopper.length === 0 && rows.some(r => r.strain === 'N');
+
+    let primaryStrain = null;
+    if (majors.length) primaryStrain = majors[0].suit;
+    else if (saPriority) primaryStrain = 'N';
+    else {
+        const tf = rows.filter(r=>r.trueFit).sort((a,b)=>b.fit-a.fit);
+        if (tf.length) primaryStrain = tf[0].strain;
+        else if (rows.some(r=>r.strain==='N')) primaryStrain='N';
+        else if (rows.length) primaryStrain=rows[0].strain;
+    }
+    return { rows, primaryStrain, noStopper };
+}
+
+// Le PAR statistique est calculé une seule fois, après les distributions DDS.
+// Le moteur compétitif préexistant traite les deux initiatives, et le résultat
+// affiché se limite au contrat modal (sans dérouler les sacrifices).
+let essentialParRenderToken = 0;
+function startEssentialParCalculation(tables, generation) {
+    const el = document.getElementById('essentialPar');
+    if (!el) return;
+    const token = ++essentialParRenderToken;
+    const source = (tables || []).filter(Boolean);
+    if (!source.length) { el.hidden = true; return; }
+    el.hidden = false;
+    el.innerHTML = '<div class="essential-par-head"><strong>PAR statistique DD</strong><span>Calcul en cours…</span></div>';
+    const declarers = parDeclarerMap(source);
+    const outcomes = [];
+    let index = 0;
+    const process = () => {
+        if (token !== essentialParRenderToken || generation !== runGeneration) return;
+        const end = Math.min(source.length, index + 4);
+        try {
+            for (; index < end; index++) {
+                outcomes.push(competitiveParForTable(source[index], declarers, 'NS'));
+                outcomes.push(competitiveParForTable(source[index], declarers, 'EW'));
+            }
+        } catch (error) {
+            if (token === essentialParRenderToken) {
+                el.innerHTML = '<div class="essential-par-head"><strong>PAR statistique indisponible</strong></div>';
+            }
+            console.warn('PAR statistique', error);
+            return;
+        }
+        if (index < source.length) {
+            const heading = el.querySelector('.essential-par-head span');
+            if (heading) heading.textContent = `${index} / ${source.length} distributions`;
+            setTimeout(process, 0);
+            return;
+        }
+        const summary = summarizeParOutcomes(outcomes);
+        const most = summary.most;
+        if (!most) { el.hidden = true; return; }
+        const contract = most.contract;
+        const suffix = most.doubled === 2 ? ' XX' : most.doubled === 1 ? ' X' : '';
+        const label = contract
+            ? `${contractNameHtml(contract.level, contract.strain)}${suffix} ${escapeHtml(most.owner)}`
+            : 'Passe';
+        el.innerHTML = `<div class="essential-par-head"><strong>PAR statistique DD</strong><span>${source.length} distributions</span></div>
+          <div class="essential-par-main"><span class="essential-par-contract">${label}</span><span class="essential-par-pct">${(summary.frequency*100).toFixed(0)} % des simulations</span></div>
+          `;
+    };
+    setTimeout(process, 0);
+}
+
 function renderContractSuggestions(n, s, tables) {
     lastContractTables = (tables || []).filter(Boolean);
     const krN = computeKaplanRubens(n);
     const krS = computeKaplanRubens(s);
     const totalKr = krN + krS;
     const scan = allContractStats(n, s, lastContractTables);
-    document.getElementById('krZoneLabel').textContent = `${totalKr.toFixed(2)} K&R`;
-    const contextEl = document.getElementById('krPairTotal');
-    if (contextEl) contextEl.textContent = contextualForceText(totalKr, scan);
-    document.getElementById('fitSummary').innerHTML = fitSummaryHtml(n, s);
-    renderContractLadder(n, s, lastContractTables);
-    renderAllContractsMatrix(lastContractTables);
 
-    const candidates = intelligentContractCandidates(n, s, totalKr, lastContractTables);
-    const columnMap = contractSuggestionColumnMap(n, s, candidates);
+    const krEl = document.getElementById('krZoneLabel');
+    if (krEl) krEl.innerHTML = `${totalKr.toFixed(2)} K&R <span class="combined-hcp">/ ${highCardPoints(n) + highCardPoints(s)} H</span>`;
+    const legacyKr = document.getElementById('krZoneLabelLegacy');
+    if (legacyKr) legacyKr.textContent = `${totalKr.toFixed(2)} K&R`;
+
+    const { rows: allLogicalRows, primaryStrain, noStopper } = logicalDisplayRows(n, s, scan);
+    const holder = document.getElementById('contractSuggestions');
+    const ladder = document.getElementById('contractLadder');
+
+    if (!allLogicalRows.length) {
+        if (holder) holder.innerHTML = '<div class="contract-note">Aucune dénomination logique détectée pour ces deux mains.</div>';
+        if (ladder) ladder.innerHTML = '';
+    } else {
+        const saRow = allLogicalRows.find(r => r.strain === 'N');
+        const naturalRows = allLogicalRows.filter(r => r.strain !== 'N').sort((a,b) => Number(a.semiFit43) - Number(b.semiFit43));
+
+        // SA n'est affiché directement que s'il est principal ou si 3SA reste un minimum crédible.
+        const saGameShare = saRow ? Number(saRow.levels[3]?.share || 0) : 0;
+        const showSaDirect = !!saRow && (primaryStrain === 'N' || saGameShare >= 0.20 || !naturalRows.length);
+        // L'ordre des cartes ET des échelles est identique : SA en tête s'il est principal.
+        const rowsShown = primaryStrain === 'N' && saRow
+            ? [saRow, ...naturalRows]
+            : naturalRows.concat(showSaDirect && saRow ? [saRow] : []);
+
+        const renderDenom = (row, isPrimary) => {
+            const reference = referenceContract(n, s, row);
+            const referenceStats = row.levels[reference.level];
+            const highlight = notableDdPotential(row, reference.level);
+            const shownStats = highlight || referenceStats;
+            const status = essentialStatus(shownStats.share);
+            const denom = row.strain === 'N' ? 'Sans-Atout' : row.semiFit43 ? `${suitSymbolHtml(row.strain)} 7 cartes (${row.semiFitShape})` : `${suitSymbolHtml(row.strain)} ${row.fit} cartes`;
+            const naturalLabel = highlight
+                ? `<strong class="essential-dd-highlight">Potentiel DD : ${contractNameHtml(highlight.level,row.strain)} · ${(highlight.share*100).toFixed(0)} %</strong><span class="essential-status ${status.cls}">${status.label}</span>`
+                : `${row.semiFit43 ? 'Contrat à examiner' : 'Contrat de référence'} : ${contractNameHtml(reference.level,row.strain)} · ${(referenceStats.share*100).toFixed(0)} %<span class="essential-status ${status.cls}">${status.label}</span>`;
+            return `<div class="essential-denom-card ${isPrimary ? 'is-primary' : 'is-secondary'}">
+              <div>
+                <div class="essential-denom-name">${denom}${isPrimary ? ' <span class="essential-section-note">· principal</span>' : row.semiFit43 ? ' <span class="essential-section-note">· alternative à 3SA</span>' : ''}</div>
+                <div class="essential-denom-meta">${naturalLabel}</div>
+              </div>
+            </div>`;
+        };
+
+        if (holder) {
+            let html = rowsShown.map(row => renderDenom(row, row.strain === primaryStrain)).join('');
+            if (saRow && !showSaDirect) {
+                html += `<button type="button" id="essentialSaToggle" class="essential-sa-toggle">Voir aussi Sans-Atout</button><div id="essentialSaExtra" hidden>${renderDenom(saRow, false)}</div>`;
+            }
+            holder.innerHTML = html;
+            const btn = document.getElementById('essentialSaToggle');
+            if (btn) btn.addEventListener('click', () => {
+                const extra = document.getElementById('essentialSaExtra');
+                if (!extra) return;
+                extra.hidden = !extra.hidden;
+                btn.textContent = extra.hidden ? 'Voir aussi Sans-Atout' : 'Masquer Sans-Atout';
+            });
+        }
+
+        if (ladder) {
+            const rowHtml = row => {
+                const levels = [1,2,3,4,5,6,7];
+                const fitText = row.semiFit43 ? `semi-fit ${row.semiFitShape}` : row.trueFit ? `fit ${row.fit}e` : 'sans-atout';
+                const cells = levels.map(level => {
+                    const st = row.levels[level] || contractMakeStats(lastContractTables, row.strain, level, 0);
+                    const pct = st.share * 100;
+                    const referenceLevel = referenceContract(n,s,row).level;
+                    const notable = notableDdPotential(row, referenceLevel);
+                    const emphasizedLevel = notable ? notable.level : referenceLevel;
+                    const cls = [level === emphasizedLevel ? 'is-frontier' : ''].filter(Boolean).join(' ');
+                    return `<div class="essential-ladder-cell ${cls}"><span class="essential-ladder-level">${contractNameHtml(level,row.strain)}</span><span class="essential-ladder-pct">${pct.toFixed(0)} %</span></div>`;
+                }).join('');
+                const title = row.strain === 'N' ? 'Sans-Atout' : `${suitSymbolHtml(row.strain)} · ${fitText}`;
+                return `<div class="essential-ladder"><div class="essential-ladder-head"><strong>${title}</strong><span>probabilité de réussite DD</span></div><div class="essential-ladder-grid" style="--essential-count:${levels.length}">${cells}</div></div>`;
+            };
+            let ladderHtml = rowsShown.map(rowHtml).join('');
+            if (saRow && !showSaDirect) {
+                ladderHtml += `<div id="essentialSaLadderExtra" hidden>${rowHtml(saRow)}</div>`;
+            }
+            ladder.innerHTML = ladderHtml;
+            const btn = document.getElementById('essentialSaToggle');
+            if (btn) {
+                const oldHandler = btn.onclick;
+                btn.addEventListener('click', () => {
+                    const extra = document.getElementById('essentialSaLadderExtra');
+                    if (extra) extra.hidden = !extra.hidden;
+                });
+            }
+        }
+    }
+
     const sampleNote = document.getElementById('contractSampleNote');
     if (sampleNote) {
         const totalSamples = lastContractTables.length;
-        const evaluated = candidates[0] && candidates[0].stats ? candidates[0].stats.count : totalSamples;
-        const stability = totalSamples > MAX_SAMPLE_COUNT
-            ? ' · estimation affinée'
-            : (totalSamples >= MAX_SAMPLE_COUNT ? ' · estimation stabilisée' : (totalSamples >= INITIAL_SAMPLE_COUNT ? ' · estimation adaptative' : ''));
-        sampleNote.textContent = `Double-dummy · ${totalSamples} distributions simulées${stability}. Le déclarant est choisi sur un échantillon pilote puis évalué sur ${evaluated} distributions.`;
+        sampleNote.textContent = `DDS · ${totalSamples} distributions simulées. Le pourcentage indique la fréquence théorique de réussite du contrat.`;
     }
-    const holder = document.getElementById('contractSuggestions');
-    if (!candidates.length) {
-        holder.innerHTML = '<div class="contract-note">Aucun contrat naturel ne ressort encore de l’échantillon.</div>';
-        renderContractComparisons(n, s, lastContractTables);
-        updateRefineControl(n, s, lastContractTables, candidates, []);
-        return;
-    }
-    const labels = { slam: 'Chelems', game: 'Manches', partial: 'Partielles' };
-    const groups = ['slam','game','partial'].map(band => {
-        const rows = candidates.filter(c=>c.band===band);
-        if (!rows.length) return '';
-        const cards = rows.map(candidate => {
-            const stats = candidate.stats || contractMakeStats(lastContractTables, candidate.strain, candidate.level);
-            const pct = stats.share * 100;
-            const title = escapeHtml(statsTooltip(stats));
-            const declarerShort = stats.declarer === 'N' ? 'M1' : 'M2';
-            const column = columnMap.get(candidate.strain);
-            const columnStyle = column ? ` style="--contract-col:${column}"` : '';
-            return `<button type="button" class="contract-option" data-contract-level="${candidate.level}" data-contract-strain="${candidate.strain}" title="${title}"${columnStyle}>
-              <div class="contract-option-namewrap"><span class="contract-option-name">${contractNameHtml(candidate.level, candidate.strain)}</span><span class="contract-option-declarer">${declarerShort}</span></div>
-              <div class="contract-option-track"><div class="contract-option-bar" style="width:${pct.toFixed(2)}%"></div></div>
-              <div class="contract-option-pct">${pct.toFixed(0)}%</div>
-            </button>`;
-        }).join('');
-        return `<div class="contract-band"><div class="contract-band-label">${labels[band]}</div><div class="contract-band-grid">${cards}</div></div>`;
-    }).join('');
-    holder.innerHTML = groups;
-    const comparisons = renderContractComparisons(n, s, lastContractTables);
-    updateRefineControl(n, s, lastContractTables, candidates, comparisons);
-    if (selectedContract) renderContractDetail(selectedContract.level, selectedContract.strain);
+    const refine = document.getElementById('refineRow');
+    if (refine) refine.hidden = true;
 }
-
 function escapeHtml(value) {
     return String(value == null ? '' : value)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -2467,6 +4263,9 @@ function escapeHtml(value) {
 }
 
 function clearProbabilityPanel() {
+    essentialParRenderToken++;
+    const par = document.getElementById('essentialPar');
+    if (par) { par.hidden = true; par.innerHTML = ''; }
     const panel = document.getElementById('parPanel');
     panel.hidden = true;
     document.getElementById('parResults').hidden = true;
@@ -2479,6 +4278,8 @@ function clearProbabilityPanel() {
     if (ladder) ladder.innerHTML = '';
     const comparisons = document.getElementById('contractComparisons');
     if (comparisons) comparisons.innerHTML = '';
+    const competitivePar = document.getElementById('competitivePar');
+    if (competitivePar) { competitivePar.innerHTML = ''; competitivePar.hidden = true; }
     allContractsOpen = false;
     const allMatrix = document.getElementById('allContractsMatrix');
     if (allMatrix) { allMatrix.innerHTML = ''; allMatrix.hidden = true; }
@@ -2532,6 +4333,7 @@ async function calculateProbabilities() {
     document.getElementById('calculateBtn').disabled = true;
 
     const solvedTables = new Array(MAX_SAMPLE_COUNT);
+    const solvedDeals = new Array(MAX_SAMPLE_COUNT);
     const makeTasks = (startIndex, endIndex) => {
         const tasks = [];
         for (let index = startIndex; index < endIndex; index++) {
@@ -2542,6 +4344,7 @@ async function calculateProbabilities() {
                 statisticalSeedId: `${baseDeal.statisticalSeedId}-sample-${index}`
             };
             const hands = sampleOpponentHandsDeterministic(exactDeal, index);
+            solvedDeals[index] = hands;
             tasks.push({ index, pbn: dealToPbnStringForDD(hands) });
         }
         return tasks;
@@ -2562,6 +4365,7 @@ async function calculateProbabilities() {
             document.getElementById('parProgressText').textContent = `${previousTarget} / ${target}`;
 
             await solveTablesWithWorkers(tasks, generation, (index, table) => {
+                if (table && solvedDeals[index]) table.__deal = solvedDeals[index];
                 solvedTables[index] = table;
                 stageDone++;
                 const pct = stageDone / stageTotal * 100;
@@ -2586,6 +4390,7 @@ async function calculateProbabilities() {
         }
 
         if (generation !== runGeneration) return;
+        startEssentialParCalculation(solvedTables.filter(Boolean), generation);
         document.getElementById('parLoading').hidden = true;
         document.getElementById('parResults').hidden = false;
     } catch (err) {
@@ -2634,6 +4439,7 @@ async function refineProbabilitiesManually() {
         hands: { N: state.n, S: state.s }
     };
     const tasks = [];
+    const taskDeals = new Map();
     for (let index = current; index < target; index++) {
         const exactKnownHands = materializeXHands(state.n, state.s, index);
         const exactDeal = {
@@ -2642,6 +4448,7 @@ async function refineProbabilitiesManually() {
             statisticalSeedId: `${baseDeal.statisticalSeedId}-sample-${index}`
         };
         const hands = sampleOpponentHandsDeterministic(exactDeal, index);
+        taskDeals.set(index, hands);
         tasks.push({ index, pbn: dealToPbnStringForDD(hands) });
     }
 
@@ -2649,6 +4456,7 @@ async function refineProbabilitiesManually() {
     let done = 0;
     try {
         await solveTablesWithWorkers(tasks, generation, (index, table) => {
+            if (table && taskDeals.has(index)) table.__deal = taskDeals.get(index);
             extended[index] = table;
             done++;
             const pct = done / tasks.length * 100;
@@ -2694,6 +4502,378 @@ function quickHandFromExactCards(cards) {
     }).join('.');
 }
 
+let ENGINE_SELF_TEST_STATUS = { ok: false, count: 0, failures: [] };
+
+function makeValidationHand(quick) {
+    const parsed = parseQuickHand(quick);
+    if (!parsed) throw new Error(`Main de validation invalide : ${quick}`);
+    return parsed;
+}
+
+function makeSyntheticTable(tricks = {}, deal = null) {
+    const table = { S:{N:0,S:0,E:13,W:13}, H:{N:0,S:0,E:13,W:13}, D:{N:0,S:0,E:13,W:13}, C:{N:0,S:0,E:13,W:13}, N:{N:0,S:0,E:13,W:13} };
+    for (const strain of ['S','H','D','C','N']) {
+        const value = tricks[strain];
+        if (Array.isArray(value)) {
+            table[strain].N = Number(value[0] || 0);
+            table[strain].S = Number(value[1] ?? value[0] ?? 0);
+        } else if (value !== undefined) {
+            table[strain].N = Number(value || 0);
+            table[strain].S = Number(value || 0);
+        }
+        table[strain].E = Math.max(0, 13 - table[strain].N);
+        table[strain].W = Math.max(0, 13 - table[strain].S);
+    }
+    if (deal) table.__deal = deal;
+    return table;
+}
+
+function repeatedSyntheticTables(count, builder) {
+    return Array.from({length: count}, (_, i) => builder(i));
+}
+
+function renderValidationBankStatus(status) {
+    const summary = document.getElementById('validationBankSummary');
+    const body = document.getElementById('validationBankBody');
+    const details = document.getElementById('validationBank');
+    if (!summary || !body || !details || !status) return;
+    const failed = status.failedScenarios || [];
+    const cls = status.ok ? 'validation-bank-ok' : 'validation-bank-fail';
+    summary.innerHTML = `<span class="${cls}">${status.ok ? '✓' : '⚠'} Validation moteur</span> · ${status.scenarioCount} scénarios · ${status.count} contrôles`;
+    const groups = Object.entries(status.groups || {}).map(([name, result]) => `${escapeHtml(name)} ${result.failed ? `⚠ ${result.failed}` : '✓'}`).join(' · ');
+    body.innerHTML = status.ok
+        ? `<div class="validation-bank-ok">Tous les scénarios ciblés passent.</div><div class="validation-bank-groups">${groups}</div><div>Le banc couvre notamment saisie/K&amp;R, fits, structure des chelems, cartes fermées, score/EV, déclarant, PAR compétitif, recommandations et stabilité statistique.</div>`
+        : `<div class="validation-bank-fail">${failed.length} scénario${failed.length>1?'s':''} en échec.</div><div>${failed.map(x=>escapeHtml(x)).join('<br>')}</div><div class="validation-bank-groups">${groups}</div>`;
+    if (!status.ok) details.open = true;
+}
+
+function runEngineSelfTests() {
+    const failures = [];
+    const failedScenarios = [];
+    const groups = {};
+    let count = 0;
+    let scenarioCount = 0;
+    let currentScenario = '';
+    let currentGroup = '';
+
+    const check = (name, condition) => {
+        count++;
+        if (!condition) {
+            failures.push(`${currentScenario}: ${name}`);
+            if (currentScenario && !failedScenarios.includes(currentScenario)) failedScenarios.push(currentScenario);
+            if (currentGroup) groups[currentGroup].failed++;
+        }
+    };
+    const scenario = (group, name, fn) => {
+        scenarioCount++;
+        currentScenario = name;
+        currentGroup = group;
+        if (!groups[group]) groups[group] = { scenarios: 0, failed: 0 };
+        groups[group].scenarios++;
+        try { fn(); }
+        catch (err) { check(`exception ${err && err.message || err}`, false); }
+        currentScenario = '';
+        currentGroup = '';
+    };
+    const hasCandidate = (rows, level, strain) => rows.some(c => c.level === level && c.strain === strain);
+    const practicalCandidate = rows => rows.find(c => c.practical) || null;
+
+    scenario('Score / EV', 'Barème duplicate NV non contré', () => {
+        check('4♥ = 420', undoubledNonVulScore(4,'H',10) === 420);
+        check('3SA = 400', undoubledNonVulScore(3,'N',9) === 400);
+        check('5♣ = 400', undoubledNonVulScore(5,'C',11) === 400);
+        check('6♥ = 980', undoubledNonVulScore(6,'H',12) === 980);
+        check('7SA = 1520', undoubledNonVulScore(7,'N',13) === 1520);
+        check('chute 1 = -50', undoubledNonVulScore(4,'H',9) === -50);
+        check('chute 2 = -100', undoubledNonVulScore(4,'H',8) === -100);
+    });
+
+    scenario('Score / EV', 'Barème duplicate complet vulnérabilité / X / XX', () => {
+        check('4♥ vuln = 620', duplicateScore(4,'H',10,true,0) === 620);
+        check('6♥ vuln = 1430', duplicateScore(6,'H',12,true,0) === 1430);
+        check('4♥X NV juste = 590', duplicateScore(4,'H',10,false,1) === 590);
+        check('4♥XX NV juste = 880', duplicateScore(4,'H',10,false,2) === 880);
+        check('4♥X NV -1 = -100', duplicateScore(4,'H',9,false,1) === -100);
+        check('4♥X NV -2 = -300', duplicateScore(4,'H',8,false,1) === -300);
+        check('4♥X V -2 = -500', duplicateScore(4,'H',8,true,1) === -500);
+        check('3SA X NV +1 = 650', duplicateScore(3,'N',10,false,1) === 650);
+        const pc = parseManualContract('4CX');
+        const pr = parseManualContract('3SAXX');
+        check('parse contrat contré', pc && pc.doubled === 1 && pc.strain === 'H');
+        check('parse contrat surcontré', pr && pr.doubled === 2 && pr.strain === 'N');
+        const sideN = { S:'AQ76', H:'AK2', D:'Q32', C:'J2' };
+        const sideS = { S:'J432', H:'Q43', D:'AK4', C:'A43' };
+        const sideSpecs = sideSuitPolicyCandidates(sideN, sideS, 'H');
+        check('V5 détecte impasse hors atout', sideSpecs.some(x => x.suit === 'S' && x.rank === 'K'));
+        check('V5 top-run couleur secondaire', sideSuitTopRun(sideN, sideS, 'D') >= 3);
+        const finesseSpec = sideSpecs.find(x => x.suit === 'S' && x.rank === 'K');
+        check('V5 calcule besoin de rentrée', finesseSpec && sidePolicyRequiredEntries(finesseSpec,'finesse').required === 1);
+        check('V5 diagnostique communications', Array.isArray(communicationDiagnostics(sideN, sideS, 'H', finesseSpec ? [{spec:finesseSpec,policy:{id:'finesse'}}] : [])));
+        check('V5 plans de timing disponibles', timingPlanCandidates(sideN, sideS, 'H', finesseSpec ? [{spec:finesseSpec,policy:{id:'finesse'}}] : []).length >= 1);
+    });
+
+    scenario('Saisie / K&R', 'Saisie française et X/x', () => {
+        const h = parseQuickHand('ARx.DV92.X87.654');
+        check('parsing 4 couleurs', !!h && h.S === 'AKx' && h.H === 'QJ92' && h.D === 'T87');
+        check('13 cartes comptées', h && handCardCount(h) === 13);
+        check('HCP déterministe', h && highCardPoints(h) === 10);
+    });
+
+    scenario('Saisie / K&R', 'Détection des doublons exacts', () => {
+        const a = makeValidationHand('A.RD963.DVX92.R8');
+        const b = makeValidationHand('32.AX742.R54.AV4');
+        check('As de pique uniquement M1', cardsFromHand(a).includes('SA') && !cardsFromHand(b).includes('SA'));
+        check('mains complètes', handCardCount(a) === 13 && handCardCount(b) === 13);
+    });
+
+    scenario('Fits / structure', 'Détection double fit 10♥ + 8♦', () => {
+        const n = makeValidationHand('A.RD963.DVX92.R8');
+        const s = makeValidationHand('32.AX742.R54.AV4');
+        const fits = fitInfos(n,s).filter(x=>x.length>=8);
+        check('fit cœur 10e', fits.some(x=>x.suit==='H' && x.length===10));
+        check('fit carreau 8e', fits.some(x=>x.suit==='D' && x.length===8));
+    });
+
+    scenario('Fits / structure', 'Partielle naturelle selon longueur de fit', () => {
+        const fake = share => ({1:{share:1},2:{share:1},3:{share},4:{share:.3},5:{share:.1},6:{share:0},7:{share:0}});
+        check('fit 8 -> niveau 2', naturalFitPartialLevel({trueFit:true,fit:8,gameLevel:4,levels:fake(.9)})===2);
+        check('fit 9 -> niveau 3 si solide', naturalFitPartialLevel({trueFit:true,fit:9,gameLevel:4,levels:fake(.8)})===3);
+        check('fit 10 majeur plafonné 3', naturalFitPartialLevel({trueFit:true,fit:10,gameLevel:4,levels:fake(.9)})===3);
+    });
+
+    scenario('Chelems', 'As et Dame d’atout manquants détectés', () => {
+        const n = makeValidationHand('RD.AR65.975.ADX2');
+        const s = makeValidationHand('V97.V9873.ARD8.5');
+        const info = slamStructureInfo(n,s,'H',6);
+        check('fit 9e', info.fit===9);
+        check('Dame atout absente', !info.trumpQ);
+        check('As pique manquant', info.missingAces.includes('S'));
+        check('structure non solide', !/solide$/i.test(info.rating));
+    });
+
+    scenario('Chelems', 'Contrôle par coupe reconnu', () => {
+        const n = makeValidationHand('AR5.ARDV9.AR54.');
+        const s = makeValidationHand('D42.X8765.DV32.A');
+        const c = firstRoundControlDetail(n,s,'C','H');
+        check('contrôle trèfle présent', c.ok);
+        check('contrôle par coupe ou As', c.type==='ruff' || c.type==='ace');
+    });
+
+    scenario('Chelems', 'Grand chelem exige ARD atout', () => {
+        const n = makeValidationHand('AR2.ARV65.AR4.A2');
+        const s = makeValidationHand('D43.9873.DV3.RV3');
+        const info = slamStructureInfo(n,s,'H',7);
+        check('Dame atout absente', !info.trumpQ);
+        check('grand fragile', /fragile/i.test(info.rating));
+    });
+
+    scenario('Cartes fermées', 'Fit 10e ARD : Valet manquant sans guess', () => {
+        const n = makeValidationHand('A.ARD63.DVX92.R8');
+        const s = makeValidationHand('32.X9742.R54.AV4');
+        const clear = trumpCanBeClearedWithoutGuess(n,s,'H');
+        check('fit 10e', clear.fit===10);
+        check('purge sans guess', clear.ok===true);
+        check('3 atouts adverses couverts', clear.missing===3 && clear.topRun>=3);
+    });
+
+    scenario('Cartes fermées', 'Dame d’atout manquante crée une politique', () => {
+        const n = makeValidationHand('A.AR65.DVX92.R8');
+        const s = makeValidationHand('32.V9873.R54.AV4');
+        const p = trumpPolicyCandidates(n,s,'H');
+        check('politique reconnue', !!p);
+        check('honneur ciblé Dame', p && p.rank==='Q');
+        check('3 lignes fixes', p && p.policies.length===3);
+    });
+
+    scenario('Cartes fermées', 'Roi d’atout manquant avec AD', () => {
+        const n = makeValidationHand('A.AD65.DVX92.R8');
+        const s = makeValidationHand('32.V9873.R54.AV4');
+        const p = trumpPolicyCandidates(n,s,'H');
+        check('politique reconnue', !!p);
+        check('honneur ciblé Roi', p && p.rank==='K');
+    });
+
+    scenario('Cartes fermées', 'Politique fixe ne voit pas la Dame', () => {
+        const dealE={E:{H:'Q32'},W:{H:'T'},N:{H:''},S:{H:''}};
+        const dealW={E:{H:'T'},W:{H:'Q32'},N:{H:''},S:{H:''}};
+        check('impasse Est gagne si Q Est', trumpPolicySucceedsOnDeal('finesseE','Q','H',dealE));
+        check('impasse Est perd si Qxxx Ouest', !trumpPolicySucceedsOnDeal('finesseE','Q','H',dealW));
+        check('tirage AR perd Q troisième', !trumpPolicySucceedsOnDeal('cash','Q','H',dealE));
+    });
+
+    scenario('Statistiques', 'Wilson contient la fréquence observée', () => {
+        const x=wilsonInterval(50,100);
+        check('borne basse < .5', x.low<.5);
+        check('borne haute > .5', x.high>.5);
+        check('bornes [0,1]', x.low>=0 && x.high<=1);
+    });
+
+    scenario('Statistiques', 'Déclarant unique par dénomination', () => {
+        const tables=repeatedSyntheticTables(72,i=>makeSyntheticTable({H:[i<24?11:10, i<24?9:12]}));
+        const d=preferredDeclarerForStrain(tables,'H');
+        const s3=contractMakeStats(tables,'H',3), s4=contractMakeStats(tables,'H',4), s6=contractMakeStats(tables,'H',6);
+        check('déclarant fixé', s3.declarer===s4.declarer && s4.declarer===s6.declarer);
+        check('pilotage actif', d.pilotCount===24);
+    });
+
+    scenario('Statistiques', 'Probabilité monotone par niveau', () => {
+        const tables=repeatedSyntheticTables(72,i=>makeSyntheticTable({H: 8+(i%6)}));
+        let prev=1.01;
+        for(let level=1;level<=7;level++){
+            const st=contractMakeStats(tables,'H',level);
+            check(`niveau ${level}`, st.share<=prev+1e-12);
+            prev=st.share;
+        }
+    });
+
+    scenario('Score / EV', 'EV calculée sur distribution de levées', () => {
+        const tables=repeatedSyntheticTables(72,i=>makeSyntheticTable({H:i%2?10:9}));
+        const st=contractMakeStats(tables,'H',4);
+        check('50% réussite', Math.abs(st.share-.5)<1e-9);
+        check('EV = moyenne 420/-50', Math.abs(st.meanScore-185)<1e-9);
+        check('scores individuels conservés', st.scoreSeries.length===st.count);
+    });
+
+    scenario('Univers contrats', 'Les cinq dénominations sont calculées', () => {
+        const n=makeValidationHand('AR2.RV65.D94.A32');
+        const s=makeValidationHand('D54.AD32.RV2.R54');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({S:9,H:10,D:9,C:9,N:9}));
+        const scan=allContractStats(n,s,tables);
+        check('5 lignes', scan.length===5);
+        for(const strain of ['S','H','D','C','N']) check(`présence ${strain}`, scan.some(r=>r.strain===strain));
+    });
+
+    scenario('Recommandations', 'Manche de fit visible quand très sûre', () => {
+        const n=makeValidationHand('AR2.RV65.D94.A32');
+        const s=makeValidationHand('D54.AD32.RV2.R54');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({H:10,N:8,S:8,D:8,C:8}));
+        const rows=intelligentContractCandidates(n,s,computeKaplanRubens(n)+computeKaplanRubens(s),tables);
+        check('4♥ visible', hasCandidate(rows,4,'H'));
+        const p=practicalCandidate(rows);
+        check('contrat pratique non chelem', p && p.level<6);
+    });
+
+    scenario('Recommandations', 'Chelem DD non couvert ne devient pas pratique', () => {
+        const n=makeValidationHand('AR2.RV65.AD4.A32');
+        const s=makeValidationHand('D54.A732.RV2.R54');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({H:12,N:10,S:10,D:10,C:10}));
+        const rows=intelligentContractCandidates(n,s,computeKaplanRubens(n)+computeKaplanRubens(s),tables);
+        const slam=rows.find(c=>c.level===6 && c.strain==='H');
+        const p=practicalCandidate(rows);
+        check('6♥ visible', !!slam);
+        check('6♥ pas pratique sans modèle fermé', !slam || !slam.practical);
+        check('pratique inférieur à 6', !p || p.level<6);
+    });
+
+    scenario('Recommandations', 'Chelem purgeable peut être validé pratique', () => {
+        const n=makeValidationHand('A.ARD63.DVX92.R8');
+        const s=makeValidationHand('32.X9742.R54.AV4');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({H:12,D:11,N:9,S:9,C:9},{E:{H:'V32'},W:{H:''},N:{H:''},S:{H:''}}));
+        const closed=closedCardEstimate(n,s,'H',6,tables);
+        check('fermé modélisé', closed.modeled===true);
+        check('pas de baisse artificielle', Math.abs(closed.share-1)<1e-9);
+        const rows=intelligentContractCandidates(n,s,computeKaplanRubens(n)+computeKaplanRubens(s),tables);
+        const p=practicalCandidate(rows);
+        check('pratique peut être chelem', p && p.level===6 && p.strain==='H');
+    });
+
+    scenario('Recommandations', 'Anomalie DD hors dénomination naturelle', () => {
+        const n=makeValidationHand('AR2.RV65.D94.A32');
+        const s=makeValidationHand('D54.AD32.RV2.R54');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({H:10,N:9,S:13,D:8,C:8}));
+        const rows=intelligentContractCandidates(n,s,computeKaplanRubens(n)+computeKaplanRubens(s),tables);
+        check('anomalie pique remontée', rows.some(c=>c.strain==='S' && c.reason==='dds-anomaly'));
+    });
+
+    scenario('Raffinement', 'Décision proche demande plus d’échantillons', () => {
+        const n=makeValidationHand('ARDV.ARDV.32.543');
+        const s=makeValidationHand('9876.9876.ARD.76');
+        const tables=repeatedSyntheticTables(72,i=>makeSyntheticTable({H:i%2?10:9,S:i%2?10:9,N:7,D:7,C:7}));
+        check('raffinement demandé', decisionNeedsMoreSamples(n,s,tables)===true);
+    });
+
+    scenario('Raffinement', 'Décision largement séparée peut se stabiliser', () => {
+        const n=makeValidationHand('AR2.RV65.D94.A32');
+        const s=makeValidationHand('D54.AD32.RV2.R54');
+        const tables=repeatedSyntheticTables(288,()=>makeSyntheticTable({H:11,N:6,S:6,D:6,C:6}));
+        check('pas de raffinement EV nécessaire', decisionNeedsMoreSamples(n,s,tables)===false);
+    });
+
+    scenario('Comparaisons', 'Fit majeur vs 3SA détecté', () => {
+        const n=makeValidationHand('AR2.RV65.D94.A32');
+        const s=makeValidationHand('D54.AD32.RV2.R54');
+        const tables=repeatedSyntheticTables(72,()=>makeSyntheticTable({H:10,N:9,S:8,D:8,C:8}));
+        const pairs=usefulContractComparisons(n,s,tables);
+        check('comparaison 4♥/3SA', pairs.some(p=>((p.a.level===4&&p.a.strain==='H'&&p.b.level===3&&p.b.strain==='N')||(p.b.level===4&&p.b.strain==='H'&&p.a.level===3&&p.a.strain==='N'))));
+    });
+
+    scenario('PAR compétitif', 'Sacrifice rentable et contre intégré', () => {
+        const oldVul = scoreVulnerability;
+        scoreVulnerability = 'NONE';
+        // NS fait 4♥ ; EO fait seulement 8 levées à 5♣. 5♣X chute de 3 = +500 NS,
+        // donc EO ne doit pas sacrifier contre +420 : le moteur doit conserver un résultat NS positif.
+        const tables = repeatedSyntheticTables(72, () => {
+            const t = makeSyntheticTable({H:[10,10], C:[5,5], S:[7,7], D:[7,7], N:[7,7]});
+            t.C.E = 8; t.C.W = 8;
+            return t;
+        });
+        const par = competitiveParStats(tables);
+        check('PAR calculé', !!par && par.count === 72);
+        check('score moyen NS positif', par && par.meanScore > 300);
+        check('issue de PAR non vide', par && !!par.both.most);
+        scoreVulnerability = oldVul;
+    });
+
+    scenario('PAR compétitif', 'Sacrifice rentable peut remplacer la manche adverse', () => {
+        const oldVul = scoreVulnerability;
+        scoreVulnerability = 'NONE';
+        // NS fait 4♥ (+420). EO peut jouer 5♣X -2 = +300 NS : sacrifice rentable pour EO.
+        const tables = repeatedSyntheticTables(72, () => {
+            const t = makeSyntheticTable({H:[10,10], C:[5,5], S:[7,7], D:[7,7], N:[7,7]});
+            t.C.E = 9; t.C.W = 9;
+            return t;
+        });
+        const decl = parDeclarerMap(tables);
+        const one = competitiveParForTable(tables[0], decl, 'NS');
+        check('score de PAR plafonné sous +420', one.score <= 420);
+        check('score de PAR reste favorable NS', one.score >= 0);
+        scoreVulnerability = oldVul;
+    });
+
+    scenario('Robustesse', '32 matrices synthétiques sans NaN', () => {
+        for (let seed=0; seed<32; seed++) {
+            const tables=[];
+            for (let i=0;i<72;i++) {
+                const t={S:{},H:{},D:{},C:{},N:{}};
+                for (const strain of ['S','H','D','C','N']) {
+                    const base = 6 + ((seed + i + strain.charCodeAt(0)) % 8);
+                    t[strain].N=Math.min(13,base);
+                    t[strain].S=Math.min(13,Math.max(0,base + ((i+seed)%3)-1));
+                    t[strain].E=13-t[strain].N;
+                    t[strain].W=13-t[strain].S;
+                }
+                tables.push(t);
+            }
+            for (const strain of ['S','H','D','C','N']) {
+                let prev=1.01;
+                for (let level=1; level<=7; level++) {
+                    const st=contractMakeStats(tables,strain,level);
+                    check(`monotone ${seed}/${strain}/${level}`, st.share <= prev + 1e-12);
+                    check(`finiteEV ${seed}/${strain}/${level}`, Number.isFinite(st.meanScore));
+                    check(`finiteShare ${seed}/${strain}/${level}`, Number.isFinite(st.share));
+                    prev=st.share;
+                }
+            }
+        }
+    });
+
+    ENGINE_SELF_TEST_STATUS = { ok: failures.length === 0, count, failures, scenarioCount, failedScenarios, groups };
+    if (failures.length) console.error('Evaluator validation bank failed:', failures);
+    else console.info(`Evaluator validation bank OK: ${scenarioCount} scénarios / ${count} contrôles`);
+    renderValidationBankStatus(ENGINE_SELF_TEST_STATUS);
+    return ENGINE_SELF_TEST_STATUS;
+}
+
 function randomizeHands() {
     cancelParRun(true);
     const deck = [];
@@ -2708,9 +4888,15 @@ function randomizeHands() {
     const hand2 = deck.slice(13, 26);
     document.getElementById('quickN').value = quickHandFromExactCards(hand1);
     document.getElementById('quickS').value = quickHandFromExactCards(hand2);
-    syncQuickHandLive('N');
-    syncQuickHandLive('S');
-    setValidation('');
+    // Remplir les deux mains avant tout recalcul : une seule validation cohérente.
+    for (const seat of ['N', 'S']) {
+        const parsed = parseQuickHand(document.getElementById(`quick${seat}`).value);
+        if (!parsed) throw new Error(`Main aléatoire ${seat} invalide.`);
+        for (const suit of SUITS) {
+            document.getElementById(`${seat}-${suit}`).value = displayRanks(parsed[suit]);
+        }
+    }
+    updateAll();
 }
 
 function resetAll() {
@@ -2738,6 +4924,12 @@ for (const seat of ['N', 'S']) {
         if (event.key === 'Enter') { event.preventDefault(); applyQuickHand(seat); }
     });
 }
+function updateScoreContext() {
+    scoreVulnerability = 'NONE';
+    const select = document.getElementById('vulnerabilitySelect');
+    if (select) select.value = 'NONE';
+}
+document.getElementById('vulnerabilitySelect').addEventListener('change', updateScoreContext);
 document.getElementById('calculateBtn').addEventListener('click', calculateProbabilities);
 document.getElementById('randomBtn').addEventListener('click', randomizeHands);
 document.getElementById('resetBtn').addEventListener('click', resetAll);
@@ -2745,11 +4937,7 @@ document.getElementById('contractTestInput').addEventListener('input', updateMan
 document.getElementById('contractTestInput').addEventListener('keydown', event => {
     if (event.key === 'Enter') { event.preventDefault(); updateManualContractLive(); }
 });
-function contractClickHandler(event) {
-    const target = event.target.closest('[data-contract-level][data-contract-strain]');
-    if (!target) return;
-    renderContractDetail(Number(target.dataset.contractLevel), target.dataset.contractStrain, { source: 'click' });
-}
+function contractClickHandler(event) { /* Vue essentielle : pas de détail avancé au clic. */ }
 document.getElementById('contractSuggestions').addEventListener('click', contractClickHandler);
 document.getElementById('contractLadder').addEventListener('click', contractClickHandler);
 document.getElementById('contractComparisons').addEventListener('click', contractClickHandler);
@@ -2757,6 +4945,8 @@ document.getElementById('allContractsMatrix').addEventListener('click', contract
 document.getElementById('allContractsToggle').addEventListener('click', toggleAllContracts);
 document.getElementById('refineBtn').addEventListener('click', refineProbabilitiesManually);
 
+updateScoreContext();
+runEngineSelfTests();
 updateAll();
 
 </script>
